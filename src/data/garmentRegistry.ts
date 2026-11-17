@@ -161,3 +161,4 @@ export const GARMENT_REGISTRY: Record<string, GarmentAssetRecord> = {
     }
   }
 };
+

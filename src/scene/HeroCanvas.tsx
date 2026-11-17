@@ -59,19 +59,21 @@ export function HeroCanvas({
   return (
     <div className="hero-canvas-wrapper">
       <Canvas
-        camera={{ position: [0, 0.4, 5.2], fov: 34 }}
-        dpr={[1, Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1.5, 1.8)]}
+        camera={{ position: [0, 0.4, 5.2], fov: 34, near: 0.1, far: 30 }}
+        // 4K Ultra-Crisp Resolution Scaling: scales up to 2.5x pixel ratio on Retina & 4K displays
+        dpr={[1, Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 2, 2.5)]}
         shadows={{ type: THREE.PCFSoftShadowMap }}
         gl={{
           antialias: true,
           alpha: true,
           powerPreference: 'high-performance',
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.05
+          toneMappingExposure: 1.12,
+          outputColorSpace: THREE.SRGBColorSpace
         }}
       >
         {/* Luxury Haute Couture Studio Lighting */}
-        <StudioEnvironment intensityMultiplier={1.0} rimColor="#f5e4cb" />
+        <StudioEnvironment intensityMultiplier={1.15} rimColor="#f5e4cb" />
 
         {/* Master Camera Choreographer linked to GSAP ScrollTrigger & View Inspector */}
         <ScrollCameraController

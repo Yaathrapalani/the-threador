@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowDown, Maximize2, BookOpen, Drama, Compass, Sliders } from 'lucide-react';
+import { ArrowDown, Sliders, ChevronUp, BookOpen, Drama } from 'lucide-react';
 import { HeroCanvas } from '../scene/HeroCanvas';
 import { GarmentViewInspector } from './GarmentViewInspector';
 import type { ModelAssetInfo, PageId, GarmentCameraView } from '../types';
@@ -14,57 +14,19 @@ interface HeroSectionProps {
   onNavigatePage: (page: PageId) => void;
 }
 
-const SCENE_DESCRIPTIONS: Record<
-  'A' | 'B' | 'C' | 'D' | 'E',
-  { sceneTag: string; headlinePart1: string; headlineEm: string; subtext: string }
-> = {
-  A: {
-    sceneTag: 'SCENE 01 — THE REVEAL',
-    headlinePart1: 'Every thread has a ',
-    headlineEm: 'beginning.',
-    subtext: 'Before it becomes something we wear, it begins in the soil, the weaver’s shuttle, and the artisan’s patience.'
-  },
-  B: {
-    sceneTag: 'SCENE 02 — THE 360° ROTATION',
-    headlinePart1: 'Sculpted on a true ',
-    headlineEm: 'bias.',
-    subtext: 'Turn through front, profile, and rear draping. Notice how the open-weave silk organza aligns with anatomical grace.'
-  },
-  C: {
-    sceneTag: 'SCENE 03 — THE FABRIC MACRO',
-    headlinePart1: 'Feel the story in the ',
-    headlineEm: 'weave.',
-    subtext: 'Extreme macro perspective: Triple-ply mulberry silk gazar, hand-anchored river seed pearls, and spun gold zardozi filaments.'
-  },
-  D: {
-    sceneTag: 'SCENE 04 — THE TRANSFORMATION',
-    headlinePart1: 'From raw fiber to ',
-    headlineEm: 'couture.',
-    subtext: 'Deconstructing the internal spiral boning, floating horsehair canvas, and 42,000 continuous tension silk stitches.'
-  },
-  E: {
-    sceneTag: 'SCENE 05 — THE PHILOSOPHY',
-    headlinePart1: 'What if every child knew ',
-    headlineEm: 'the story?',
-    subtext: 'Connecting young minds to Indian textiles, indigenous crafts, and stage costume arts. Descend into the duality of form.'
-  }
-};
-
 export function HeroSection({
   scrollProgress,
   stage,
   onStageChange,
   assetInfo,
   onAssetInfoChange,
-  onJumpToXRay,
   onNavigatePage
 }: HeroSectionProps) {
-  const currentScene = SCENE_DESCRIPTIONS[stage];
-
-  // Garment Detail Inspection pipeline state
+  // Garment Detail Inspection pipeline state (discreet minimalist drawer)
   const [activeView, setActiveView] = useState<GarmentCameraView>('front');
   const [isManualViewMode, setIsManualViewMode] = useState<boolean>(false);
   const [isTurntableActive, setIsTurntableActive] = useState<boolean>(false);
+  const [showInspectorPanel, setShowInspectorPanel] = useState<boolean>(false);
 
   const handleSelectInspectorView = (view: GarmentCameraView) => {
     setActiveView(view);
@@ -80,35 +42,8 @@ export function HeroSection({
   };
 
   return (
-    <section className="hero-viewport" id="hero">
-      {/* 1. TECHNICAL ATELIER METRIC GRID */}
-      <div className="technical-grid-bg" aria-hidden="true">
-        <div className="grid-axis-vertical left" />
-        <div className="grid-axis-vertical right" />
-        <div className="grid-axis-horizontal top" />
-        <div className="grid-axis-horizontal bottom" />
-
-        <div className="metric-tick tick-top-left">
-          <span>THE THREADOR • ATELIER FORME</span>
-          <span>ORIGIN: INDIA TEXTILE ARCHIVE</span>
-        </div>
-        <div className="metric-tick tick-top-right">
-          <span>SILHOUETTE: 1,750 MM</span>
-          <span>DISCIPLINE: FASHION EDUCATION & COSTUME</span>
-        </div>
-        <div className="metric-tick tick-bottom-left">
-          <span>CORE PHILOSOPHY: SOIL TO STAGE</span>
-          <span>FIBER: KHADI, MULBERRY SILK & ZARDOZI</span>
-        </div>
-        <div className="metric-tick tick-bottom-right">
-          <span>
-            {isManualViewMode ? `INSPECTOR: ${activeView.toUpperCase()}` : `STAGE: ${stage}`}
-          </span>
-          <span>MESH: {assetInfo.status === 'external-glb-loaded' ? 'PRODUCTION GLB' : 'PROCEDURAL RIG'} ({Math.round(scrollProgress * 100)}%)</span>
-        </div>
-      </div>
-
-      {/* 2. 3D HERO CANVAS (Supports both GSAP scroll and Manual 6-View Inspector) */}
+    <section className="hero-viewport minimalist-hero" id="hero">
+      {/* 1. 3D HERO CANVAS - 4K Crisp Haute Couture Centerpiece */}
       <div className="hero-scene-container">
         <HeroCanvas
           scrollProgress={scrollProgress}
@@ -120,92 +55,88 @@ export function HeroSection({
         />
       </div>
 
-      {/* 3. DYNAMIC SCENE EDITORIAL OVERLAY */}
-      <div className="hero-editorial-overlay">
-        <div className="editorial-stage-badge">
-          <span className="stage-code">
-            {isManualViewMode ? `ANGLE INSPECTOR — ${activeView.toUpperCase()}` : currentScene.sceneTag}
-          </span>
-          <div className="stage-progress-pills">
-            {(['A', 'B', 'C', 'D', 'E'] as const).map((s) => (
-              <span
-                key={s}
-                className={`stage-pill ${stage === s ? 'active' : ''}`}
-                title={`Scene ${s}`}
-              />
-            ))}
-          </div>
+      {/* 2. MINIMALIST LUXURY EDITORIAL HEADER (Pure negative space, monumental serif) */}
+      <div className="minimalist-hero-content">
+        <div className="hero-monumental-header">
+          <span className="hero-haute-tag">THE THREADOR • HAUTE COUTURE ATELIER</span>
+          <h1 className="hero-monumental-title">
+            The Story Behind<br />
+            <i>What We Wear.</i>
+          </h1>
+          <p className="hero-monumental-subtitle">
+            What if every child grew up knowing how a thread transforms from soil into silk,
+            structure, and stage? An extraordinary convergence of Indian textile arts and digital couture.
+          </p>
 
-          {isManualViewMode && (
+          {/* Discreet Luxury Pathways */}
+          <div className="hero-luxury-pathways">
             <button
               type="button"
-              className="return-scroll-btn"
-              onClick={handleReturnToScroll}
-              title="Return to scroll-driven timeline"
+              className="luxury-pathway-pill primary"
+              onClick={() => onNavigatePage('annual-day')}
             >
-              <Compass size={11} />
-              <span>RETURN TO SCROLL</span>
+              <Drama size={13} />
+              <span>ANNUAL DAY COSTUMES</span>
             </button>
-          )}
-        </div>
 
-        <h1 className="hero-headline">
-          {currentScene.headlinePart1}
-          <i>{currentScene.headlineEm}</i>
-        </h1>
-
-        <p className="hero-narrative">{currentScene.subtext}</p>
-
-        {/* Strategic Business Pathway CTAs */}
-        <div className="hero-quick-actions">
-          <button
-            type="button"
-            className="editorial-action-btn primary"
-            onClick={() => onNavigatePage('course')}
-          >
-            <BookOpen size={13} />
-            <span>LEARN: FASHION EDUCATION</span>
-          </button>
-          <button
-            type="button"
-            className="editorial-action-btn primary"
-            onClick={() => onNavigatePage('annual-day')}
-          >
-            <Drama size={13} />
-            <span>CREATE: ANNUAL DAY COSTUMES</span>
-          </button>
-          <button
-            type="button"
-            className="editorial-action-btn secondary"
-            onClick={onJumpToXRay}
-          >
-            <Maximize2 size={13} />
-            <span>X-RAY DECONSTRUCTION</span>
-          </button>
-        </div>
-
-        {/* 4. GARMENT DETAIL INSPECTION BAR (Phase 5 Canonical 6-View Pipeline) */}
-        <div className="hero-inspector-mount">
-          <div className="inspector-mount-header">
-            <span className="inspector-mount-tag">
-              <Sliders size={12} className="inline-icon" />
-              MULTI-ANGLE GARMENT INSPECTION PIPELINE
-            </span>
+            <button
+              type="button"
+              className="luxury-pathway-pill secondary"
+              onClick={() => onNavigatePage('course')}
+            >
+              <BookOpen size={13} />
+              <span>FASHION EDUCATION</span>
+            </button>
           </div>
-          <GarmentViewInspector
-            currentView={activeView}
-            onSelectView={handleSelectInspectorView}
-            isTurntableActive={isTurntableActive}
-            onToggleTurntable={handleToggleTurntable}
-            garmentId="THREADOR-W-001"
-          />
         </div>
+      </div>
 
-        {/* 5. Scroll Prompt */}
-        <div className="hero-scroll-cue">
-          <span className="scroll-cue-text">SCROLL TO ROTATE & UNRAVEL CRAFTSMANSHIP</span>
-          <ArrowDown size={14} className="scroll-arrow-icon" />
-        </div>
+      {/* 3. DISCREET MULTI-ANGLE INSPECTOR PILL (Unobtrusive floating control) */}
+      <div className="hero-floating-controls">
+        <button
+          type="button"
+          className={`inspector-toggle-pill ${showInspectorPanel ? 'active' : ''}`}
+          onClick={() => setShowInspectorPanel((prev) => !prev)}
+          aria-expanded={showInspectorPanel}
+          title="Toggle 3D Multi-Angle Garment Inspector"
+        >
+          <Sliders size={12} />
+          <span>{showInspectorPanel ? 'HIDE INSPECTOR' : 'INSPECT 3D SILHOUETTE'}</span>
+          <ChevronUp size={12} className={`toggle-chevron ${showInspectorPanel ? 'open' : ''}`} />
+        </button>
+
+        {showInspectorPanel && (
+          <div className="minimalist-inspector-drawer">
+            <div className="drawer-reset-row">
+              <span className="drawer-view-label">
+                {isManualViewMode ? `VIEW: ${activeView.toUpperCase()}` : `SCENE ${stage}`} • {assetInfo.status === 'external-glb-loaded' ? '4K PRODUCTION GLB' : 'ATELIER RIG'}
+              </span>
+              {isManualViewMode && (
+                <button
+                  type="button"
+                  className="drawer-return-btn"
+                  onClick={handleReturnToScroll}
+                >
+                  RESUME SCROLL
+                </button>
+              )}
+            </div>
+            <GarmentViewInspector
+              currentView={activeView}
+              onSelectView={handleSelectInspectorView}
+              isTurntableActive={isTurntableActive}
+              onToggleTurntable={handleToggleTurntable}
+              garmentId="THREADOR-W-001"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* 4. REFINED MINIMALIST SCROLL PROMPT */}
+      <div className="hero-minimalist-scroll-cue">
+        <span className="scroll-hairline" />
+        <span className="scroll-cue-text">SCROLL TO DISCOVER</span>
+        <ArrowDown size={12} className="scroll-arrow-subtle" />
       </div>
     </section>
   );
