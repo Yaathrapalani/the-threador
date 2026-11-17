@@ -4,20 +4,24 @@ import * as THREE from 'three';
 import { StudioEnvironment } from './StudioEnvironment';
 import { GlbGarmentLoader } from './GlbGarmentLoader';
 import { ScrollCameraController } from './ScrollCameraController';
-import type { ModelAssetInfo, XRayStage } from '../types';
+import type { ModelAssetInfo, XRayStage, GarmentCameraView } from '../types';
 
 interface HeroCanvasProps {
   scrollProgress: number;
   xrayMode?: XRayStage;
   onStageChange?: (stage: 'A' | 'B' | 'C' | 'D' | 'E') => void;
   onAssetInfoChange?: (info: ModelAssetInfo) => void;
+  forcedView?: GarmentCameraView | null;
+  isTurntableActive?: boolean;
 }
 
 export function HeroCanvas({
   scrollProgress,
   xrayMode = 'finished',
   onStageChange,
-  onAssetInfoChange
+  onAssetInfoChange,
+  forcedView = null,
+  isTurntableActive = false
 }: HeroCanvasProps) {
   const garmentRigRef = useRef<THREE.Group>(null);
   const [hasWebGL, setHasWebGL] = useState<boolean>(true);
@@ -40,12 +44,12 @@ export function HeroCanvas({
       <div className="webgl-fallback-container" role="img" aria-label="Haute Couture Mannequin Exhibition">
         <div className="webgl-fallback-card">
           <span className="fallback-badge">OFFLINE CANVAS / FALLBACK RENDERING</span>
-          <h3>L’Aura de Soie No. 07</h3>
+          <h3>The Champagne Atelier Gown</h3>
           <p>Mulberry Silk Organza & River Pearl Couture Gown — Hand-Boned Bodice</p>
           <div className="fallback-metrics">
             <span>320 CRAFT HOURS</span>
             <span>42,000 STITCHES</span>
-            <span>8,400 PEARLS</span>
+            <span>45 PEARLS</span>
           </div>
         </div>
       </div>
@@ -69,11 +73,13 @@ export function HeroCanvas({
         {/* Luxury Haute Couture Studio Lighting */}
         <StudioEnvironment intensityMultiplier={1.0} rimColor="#f5e4cb" />
 
-        {/* Master Camera Choreographer linked to GSAP ScrollTrigger */}
+        {/* Master Camera Choreographer linked to GSAP ScrollTrigger & View Inspector */}
         <ScrollCameraController
           scrollProgress={scrollProgress}
           garmentGroupRef={garmentRigRef}
           onStageChange={onStageChange}
+          forcedView={forcedView}
+          isTurntableActive={isTurntableActive}
         />
 
         {/* Garment Rig: Mannequin + Couture Gown + GLB Loader Pipeline */}
@@ -87,4 +93,3 @@ export function HeroCanvas({
     </div>
   );
 }
-

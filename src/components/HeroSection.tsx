@@ -1,6 +1,8 @@
-import { ArrowDown, Maximize2, BookOpen, Drama } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowDown, Maximize2, BookOpen, Drama, Compass, Sliders } from 'lucide-react';
 import { HeroCanvas } from '../scene/HeroCanvas';
-import type { ModelAssetInfo, PageId } from '../types';
+import { GarmentViewInspector } from './GarmentViewInspector';
+import type { ModelAssetInfo, PageId, GarmentCameraView } from '../types';
 
 interface HeroSectionProps {
   scrollProgress: number;
@@ -12,7 +14,10 @@ interface HeroSectionProps {
   onNavigatePage: (page: PageId) => void;
 }
 
-const SCENE_DESCRIPTIONS: Record<'A' | 'B' | 'C' | 'D' | 'E', { sceneTag: string; headlinePart1: string; headlineEm: string; subtext: string }> = {
+const SCENE_DESCRIPTIONS: Record<
+  'A' | 'B' | 'C' | 'D' | 'E',
+  { sceneTag: string; headlinePart1: string; headlineEm: string; subtext: string }
+> = {
   A: {
     sceneTag: 'SCENE 01 — THE REVEAL',
     headlinePart1: 'Every thread has a ',
@@ -56,6 +61,24 @@ export function HeroSection({
 }: HeroSectionProps) {
   const currentScene = SCENE_DESCRIPTIONS[stage];
 
+  // Garment Detail Inspection pipeline state
+  const [activeView, setActiveView] = useState<GarmentCameraView>('front');
+  const [isManualViewMode, setIsManualViewMode] = useState<boolean>(false);
+  const [isTurntableActive, setIsTurntableActive] = useState<boolean>(false);
+
+  const handleSelectInspectorView = (view: GarmentCameraView) => {
+    setActiveView(view);
+    setIsManualViewMode(true);
+  };
+
+  const handleToggleTurntable = () => {
+    setIsTurntableActive((prev) => !prev);
+  };
+
+  const handleReturnToScroll = () => {
+    setIsManualViewMode(false);
+  };
+
   return (
     <section className="hero-viewport" id="hero">
       {/* 1. TECHNICAL ATELIER METRIC GRID */}
@@ -78,25 +101,31 @@ export function HeroSection({
           <span>FIBER: KHADI, MULBERRY SILK & ZARDOZI</span>
         </div>
         <div className="metric-tick tick-bottom-right">
-          <span>CAMERA TIMELINE: 5 SCENES</span>
-          <span>SCROLL PROGRESS: {Math.round(scrollProgress * 100)}%</span>
+          <span>
+            {isManualViewMode ? `INSPECTOR: ${activeView.toUpperCase()}` : `STAGE: ${stage}`}
+          </span>
+          <span>MESH: {assetInfo.status === 'external-glb-loaded' ? 'PRODUCTION GLB' : 'PROCEDURAL RIG'} ({Math.round(scrollProgress * 100)}%)</span>
         </div>
       </div>
 
-      {/* 2. 3D HERO CANVAS */}
+      {/* 2. 3D HERO CANVAS (Supports both GSAP scroll and Manual 6-View Inspector) */}
       <div className="hero-scene-container">
         <HeroCanvas
           scrollProgress={scrollProgress}
           xrayMode="finished"
           onStageChange={onStageChange}
           onAssetInfoChange={onAssetInfoChange}
+          forcedView={isManualViewMode ? activeView : null}
+          isTurntableActive={isTurntableActive}
         />
       </div>
 
       {/* 3. DYNAMIC SCENE EDITORIAL OVERLAY */}
       <div className="hero-editorial-overlay">
         <div className="editorial-stage-badge">
-          <span className="stage-code">{currentScene.sceneTag}</span>
+          <span className="stage-code">
+            {isManualViewMode ? `ANGLE INSPECTOR — ${activeView.toUpperCase()}` : currentScene.sceneTag}
+          </span>
           <div className="stage-progress-pills">
             {(['A', 'B', 'C', 'D', 'E'] as const).map((s) => (
               <span
@@ -106,6 +135,18 @@ export function HeroSection({
               />
             ))}
           </div>
+
+          {isManualViewMode && (
+            <button
+              type="button"
+              className="return-scroll-btn"
+              onClick={handleReturnToScroll}
+              title="Return to scroll-driven timeline"
+            >
+              <Compass size={11} />
+              <span>RETURN TO SCROLL</span>
+            </button>
+          )}
         </div>
 
         <h1 className="hero-headline">
@@ -139,32 +180,31 @@ export function HeroSection({
             onClick={onJumpToXRay}
           >
             <Maximize2 size={13} />
-            <span>3D X-RAY DECONSTRUCTION</span>
+            <span>X-RAY DECONSTRUCTION</span>
           </button>
         </div>
-      </div>
 
-      {/* 4. BOTTOM STATUS BAR & SCROLL CUE */}
-      <div className="hero-bottom-bar">
-        <div className="stage-indicator">
-          <span className="stage-index">{stage} OF E</span>
-          <span className="stage-detail-name">
-            {stage === 'A' && 'THE REVEAL'}
-            {stage === 'B' && '360° CONTINUOUS ROTATION'}
-            {stage === 'C' && 'MACRO EMBROIDERY & PEARLS'}
-            {stage === 'D' && 'INTERNAL CHASSIS TRANSFORMATION'}
-            {stage === 'E' && 'PHILOSOPHY & THE DIVIDED ATELIER'}
-          </span>
+        {/* 4. GARMENT DETAIL INSPECTION BAR (Phase 5 Canonical 6-View Pipeline) */}
+        <div className="hero-inspector-mount">
+          <div className="inspector-mount-header">
+            <span className="inspector-mount-tag">
+              <Sliders size={12} className="inline-icon" />
+              MULTI-ANGLE GARMENT INSPECTION PIPELINE
+            </span>
+          </div>
+          <GarmentViewInspector
+            currentView={activeView}
+            onSelectView={handleSelectInspectorView}
+            isTurntableActive={isTurntableActive}
+            onToggleTurntable={handleToggleTurntable}
+            garmentId="THREADOR-W-001"
+          />
         </div>
 
-        <div className="scroll-invitation">
-          <ArrowDown size={14} className="bounce-arrow" />
-          <span>SCROLL TO ADVANCE 3D NARRATIVE</span>
-        </div>
-
-        <div className="asset-status-summary">
-          <span className="status-dot online" />
-          <span>{assetInfo.isExternalGlb ? 'PRODUCTION GLB LOADED' : 'HAUTE COUTURE 3D PROTOTYPE'}</span>
+        {/* 5. Scroll Prompt */}
+        <div className="hero-scroll-cue">
+          <span className="scroll-cue-text">SCROLL TO ROTATE & UNRAVEL CRAFTSMANSHIP</span>
+          <ArrowDown size={14} className="scroll-arrow-icon" />
         </div>
       </div>
     </section>

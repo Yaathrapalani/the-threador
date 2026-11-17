@@ -3607,6 +3607,252 @@ body {
   }
 }
 
+/* ==============================================================================
+   12. GARMENT VIEW INSPECTOR (CANONICAL 6-VIEW PIPELINE)
+   ============================================================================== */
+.hero-inspector-mount {
+  margin-top: 18px;
+  background: rgba(16, 20, 28, 0.72);
+  border: 1px solid rgba(199, 166, 74, 0.22);
+  backdrop-filter: blur(16px);
+  padding: 14px 18px;
+  max-width: 680px;
+}
+
+.inspector-mount-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(244, 241, 232, 0.08);
+}
+
+.inspector-mount-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--color-mustard);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.return-scroll-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(199, 166, 74, 0.15);
+  border: 1px solid rgba(199, 166, 74, 0.4);
+  color: var(--color-mustard);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 10px;
+}
+
+.return-scroll-btn:hover {
+  background: rgba(199, 166, 74, 0.3);
+  color: #fff;
+}
+
+.garment-view-inspector-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inspector-telemetry-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.telemetry-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.live-lens-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--color-ivory);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.live-angle-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--color-mustard);
+}
+
+.telemetry-angle-desc {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: rgba(244, 241, 232, 0.78);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.inspector-views-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.inspector-view-pill {
+  background: rgba(16, 36, 64, 0.45);
+  border: 1px solid rgba(244, 241, 232, 0.14);
+  color: var(--color-ivory);
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+}
+
+.inspector-view-pill:hover {
+  border-color: rgba(199, 166, 74, 0.5);
+  background: rgba(199, 166, 74, 0.1);
+}
+
+.inspector-view-pill.active {
+  background: var(--color-mustard);
+  color: var(--color-deep-ink);
+  border-color: var(--color-mustard);
+  box-shadow: 0 0 14px rgba(199, 166, 74, 0.35);
+}
+
+.inspector-view-pill .pill-icon {
+  opacity: 0.85;
+}
+
+.inspector-view-pill.active .pill-icon {
+  opacity: 1;
+}
+
+.pill-text-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+}
+
+.pill-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.pill-sub {
+  font-family: var(--font-sans);
+  font-size: 8px;
+  letter-spacing: 0.05em;
+  opacity: 0.75;
+}
+
+.inspector-view-pill.active .pill-sub {
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.inspector-bottom-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 6px;
+  border-top: 1px solid rgba(244, 241, 232, 0.08);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.craft-spec-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+.craft-spec-item .spec-label {
+  color: rgba(244, 241, 232, 0.5);
+}
+
+.craft-spec-item .spec-value {
+  color: var(--color-mustard);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.turntable-toggle-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(244, 241, 232, 0.18);
+  color: var(--color-ivory);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.turntable-toggle-btn:hover {
+  border-color: var(--color-mustard);
+  color: var(--color-mustard);
+}
+
+.turntable-toggle-btn.active {
+  background: rgba(199, 166, 74, 0.2);
+  border-color: var(--color-mustard);
+  color: var(--color-mustard);
+}
+
+.spin-icon {
+  animation: spinTurntable 3.5s linear infinite;
+}
+
+@keyframes spinTurntable {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .inspector-views-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .hero-inspector-mount {
+    margin-top: 12px;
+    padding: 10px 12px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     scroll-behavior: auto !important;

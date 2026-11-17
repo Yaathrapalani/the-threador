@@ -50,3 +50,4 @@ The repository operates under strict TypeScript compilation:
 2. Commit changes with clear, semantic commit messages.
 3. Verify that `npm run build` succeeds cleanly.
 4. Push your branch and open a Pull Request against `main`.
+

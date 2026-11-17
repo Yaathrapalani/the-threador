@@ -1,3 +1,4 @@
 # Production 3D GLB Drop Slot
 # Drop your optimized 'hero-garment.glb' model into this folder.
 # The Threador runtime will automatically detect and stream it into the 3D canvas.
+

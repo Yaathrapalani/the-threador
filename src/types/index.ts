@@ -2,6 +2,8 @@ export type AtelierGender = 'men' | 'women';
 
 export type XRayStage = 'finished' | 'construction' | 'textile';
 
+export type GarmentCameraView = 'front' | 'threeQuarter' | 'side' | 'back' | 'macro' | 'stitching';
+
 export type PageId = 'home' | 'about' | 'annual-day' | 'course' | 'gallery' | 'contact';
 
 export interface GarmentStory {
