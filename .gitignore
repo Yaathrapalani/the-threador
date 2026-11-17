@@ -1,0 +1,69 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Diagnostic and build caches
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.tsbuildinfo
+.eslintcache
+.cache/
+.vite/
+
+# Dependency directories
+node_modules/
+
+# Production build outputs
+dist/
+dist-ssr/
+build/
+out/
+
+# Environment files and credentials
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+*.env
+!*.env.example
+*.pem
+*.key
+*.cert
+*.p12
+*.crt
+id_rsa*
+credentials.json
+secrets.json
+
+# Editor and IDE configurations
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Operating System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Temporary files and scratch scripts
+tmp/
+temp/
+scratch/
