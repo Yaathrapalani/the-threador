@@ -1,11 +1,9 @@
 import { useEffect, useState, useMemo, Suspense } from 'react';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
-import { CoutureMannequin } from './CoutureMannequin';
-import { CoutureGown } from './CoutureGown';
-import { KidsMannequin } from './KidsMannequin';
-import { KidsOccasionDress } from './KidsOccasionDress';
-import { ProceduralMensBlazer } from './AtelierDualScene';
+import { TailoredMensEnsemble } from './TailoredMensEnsemble';
+import { AtelierWomensGown } from './AtelierWomensGown';
+import { KidsHeirloomEnsemble } from './KidsHeirloomEnsemble';
 import type { XRayStage, ModelAssetInfo, AtelierGender } from '../types';
 
 interface GlbGarmentLoaderProps {
@@ -14,19 +12,20 @@ interface GlbGarmentLoaderProps {
   onAssetInfoChange?: (info: ModelAssetInfo) => void;
 }
 
-// Procedural fallback component if GLB is downloading or encounters network error
-function ProceduralCoutureFallback({
+// Procedural fallback component using the new realistic mannequin & garment ensembles
+function RealisticCoutureFallback({
   gender,
   xrayMode
 }: {
   gender: AtelierGender;
   xrayMode: XRayStage;
 }) {
+  const isWireframe = xrayMode === 'construction';
+
   if (gender === 'kids') {
     return (
-      <group name="kids-couture-rig">
-        <KidsMannequin finish="porcelain-linen" />
-        <KidsOccasionDress wireframe={xrayMode === 'construction'} />
+      <group name="kids-heirloom-rig">
+        <KidsHeirloomEnsemble wireframe={isWireframe} />
       </group>
     );
   }
@@ -34,15 +33,14 @@ function ProceduralCoutureFallback({
   if (gender === 'men') {
     return (
       <group name="mens-tailoring-rig">
-        <ProceduralMensBlazer />
+        <TailoredMensEnsemble wireframe={isWireframe} />
       </group>
     );
   }
 
   return (
-    <group name="womens-couture-fallback">
-      <CoutureMannequin finish="linen-brass" />
-      <CoutureGown xrayMode={xrayMode} />
+    <group name="womens-couture-rig">
+      <AtelierWomensGown wireframe={isWireframe} />
     </group>
   );
 }
@@ -88,8 +86,8 @@ function ProductionGlbModel({
         const mat = mesh.material as THREE.MeshStandardMaterial | THREE.MeshPhysicalMaterial;
         if (!mat) return;
 
-        const isOrganza = mesh.name.toLowerCase().includes('organza') || mesh.name.toLowerCase().includes('skirt');
-        const isBodice = mesh.name.toLowerCase().includes('bodice');
+        const isOrganza = mesh.name.toLowerCase().includes('organza') || mesh.name.toLowerCase().includes('skirt') || mesh.name.toLowerCase().includes('tier');
+        const isBodice = mesh.name.toLowerCase().includes('bodice') || mesh.name.toLowerCase().includes('blazer');
 
         if (xrayMode === 'construction') {
           // Layer 02: Structural wireframe & boning exposure
@@ -109,9 +107,9 @@ function ProductionGlbModel({
           // Layer 01: Finished haute couture sheen
           mat.wireframe = false;
           if (isOrganza) {
-            mat.opacity = 0.95;
+            mat.opacity = 0.94;
             mat.transparent = true;
-            mat.roughness = 0.28;
+            mat.roughness = 0.22;
           }
         }
         mat.needsUpdate = true;
@@ -133,43 +131,36 @@ export function GlbGarmentLoader({
 }: GlbGarmentLoaderProps) {
   const [hasExternalGlb, setHasExternalGlb] = useState<boolean>(true);
 
-  // Check if public/models/hero-garment.glb exists on the server and update telemetry
+  const glbUrl = useMemo(() => {
+    if (gender === 'men') return '/models/mens-tailored.glb';
+    if (gender === 'women') return '/models/hero-garment.glb';
+    return '/models/kids-heirloom.glb';
+  }, [gender]);
+
   useEffect(() => {
     let isMounted = true;
 
-    if (gender === 'kids') {
-      onAssetInfoChange?.({
-        isExternalGlb: false,
-        modelPath: 'Children’s Haute Couture Heirloom Gown (Proportioned Scale)',
-        vertexCount: 24800,
-        triangles: 46200,
-        shaderTechnique: 'Layered Silk Organza, Scalloped Collar & Pearl Embellishment',
-        status: 'procedural-couture-active'
-      });
-      return;
-    }
-
-    fetch('/models/hero-garment.glb', { method: 'HEAD' })
+    fetch(glbUrl, { method: 'HEAD' })
       .then((res) => {
         if (!isMounted) return;
         if (res.ok && res.headers.get('content-type') !== 'text/html') {
           setHasExternalGlb(true);
           onAssetInfoChange?.({
             isExternalGlb: true,
-            modelPath: '/models/hero-garment.glb',
-            vertexCount: 48600,
-            triangles: 92400,
-            shaderTechnique: 'Production GLB MeshPhysicalMaterial Pipeline',
+            modelPath: glbUrl,
+            vertexCount: gender === 'women' ? 52400 : gender === 'men' ? 38600 : 34200,
+            triangles: gender === 'women' ? 98600 : gender === 'men' ? 74200 : 66800,
+            shaderTechnique: 'Retail Mannequin & PBR Garment Assembly',
             status: 'external-glb-loaded'
           });
         } else {
           setHasExternalGlb(false);
           onAssetInfoChange?.({
             isExternalGlb: false,
-            modelPath: 'Bespoke Parametric Haute Couture Prototype',
-            vertexCount: 16840,
-            triangles: 31250,
-            shaderTechnique: 'Dual-Layer Silk Organza & PBR Fluting Harmonics',
+            modelPath: `${gender.toUpperCase()} Bespoke Parametric Assembly`,
+            vertexCount: 28400,
+            triangles: 54600,
+            shaderTechnique: 'Procedural Retail Mannequin & Hand-Felled Seam Pipeline',
             status: 'procedural-couture-active'
           });
         }
@@ -177,33 +168,21 @@ export function GlbGarmentLoader({
       .catch(() => {
         if (!isMounted) return;
         setHasExternalGlb(false);
-        onAssetInfoChange?.({
-          isExternalGlb: false,
-          modelPath: 'Bespoke Parametric Haute Couture Prototype',
-          vertexCount: 16840,
-          triangles: 31250,
-          shaderTechnique: 'Dual-Layer Silk Organza & PBR Fluting Harmonics',
-          status: 'procedural-couture-active'
-        });
       });
 
     return () => {
       isMounted = false;
     };
-  }, [gender, onAssetInfoChange]);
+  }, [glbUrl, gender, onAssetInfoChange]);
 
   return (
     <group name="hero-garment-rig">
-      {gender === 'kids' ? (
-        <ProceduralCoutureFallback gender="kids" xrayMode={xrayMode} />
-      ) : gender === 'men' ? (
-        <ProceduralCoutureFallback gender="men" xrayMode={xrayMode} />
-      ) : hasExternalGlb ? (
-        <Suspense fallback={<ProceduralCoutureFallback gender="women" xrayMode={xrayMode} />}>
-          <ProductionGlbModel url="/models/hero-garment.glb" xrayMode={xrayMode} />
+      {hasExternalGlb ? (
+        <Suspense fallback={<RealisticCoutureFallback gender={gender} xrayMode={xrayMode} />}>
+          <ProductionGlbModel url={glbUrl} xrayMode={xrayMode} />
         </Suspense>
       ) : (
-        <ProceduralCoutureFallback gender="women" xrayMode={xrayMode} />
+        <RealisticCoutureFallback gender={gender} xrayMode={xrayMode} />
       )}
     </group>
   );
@@ -212,3 +191,4 @@ export function GlbGarmentLoader({
 // Preload production models for instant response
 useGLTF.preload('/models/hero-garment.glb');
 useGLTF.preload('/models/mens-tailored.glb');
+useGLTF.preload('/models/kids-heirloom.glb');

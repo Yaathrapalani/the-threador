@@ -8660,3 +8660,273 @@ body {
   background: rgba(255, 255, 255, 0.1);
   color: var(--color-text-primary);
 }
+
+
+/* =============================================================================
+   CINEMATIC ARCHITECTURAL SHOWROOM & 7-STAGE CAMERA TELEMETRY
+   ============================================================================= */
+
+/* Top-Centered Showroom Collection Switcher Dock */
+.showroom-collection-dock {
+  position: absolute;
+  top: 104px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-content);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(16, 12, 24, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 16px rgba(112, 66, 166, 0.15);
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .showroom-collection-dock {
+    top: 80px;
+    width: calc(100% - 32px);
+    justify-content: center;
+  }
+}
+
+.showroom-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.showroom-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-text-primary);
+  border-color: rgba(112, 66, 166, 0.3);
+}
+
+.showroom-tab-btn.active {
+  background: linear-gradient(135deg, rgba(112, 66, 166, 0.25), rgba(23, 19, 29, 0.95));
+  border-color: var(--color-electric-violet);
+  color: var(--color-text-primary);
+  box-shadow: 0 0 16px rgba(112, 66, 166, 0.3);
+}
+
+.dock-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.showroom-tab-btn.active .dock-bullet {
+  background: var(--color-acid-lime);
+  transform: scale(1.25);
+  box-shadow: 0 0 8px rgba(183, 227, 59, 0.8);
+}
+
+.hero-tag-cluster {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.showroom-gender-badge {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--color-muted-lilac);
+  background: rgba(166, 140, 191, 0.08);
+  border: 1px solid rgba(166, 140, 191, 0.22);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+
+/* 7-Stage Automatic Cinematic Camera Telemetry HUD */
+.hero-cinematic-telemetry-hud {
+  position: absolute;
+  bottom: 36px;
+  right: 5vw;
+  z-index: var(--z-content);
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .hero-cinematic-telemetry-hud {
+    display: none;
+  }
+}
+
+.telemetry-inner-card {
+  background: rgba(16, 12, 24, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border-subtle);
+  border-left: 2px solid var(--color-acid-lime);
+  border-radius: 3px;
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  min-width: 260px;
+}
+
+.telemetry-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.telemetry-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-acid-lime);
+  box-shadow: 0 0 8px rgba(183, 227, 59, 0.9);
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.telemetry-stage-name {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.telemetry-pct {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  color: var(--color-muted-lilac);
+}
+
+.telemetry-desc {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+/* Floating Controls Button Group (Turntable + Manual Angles) */
+.controls-button-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.turntable-quick-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  background: rgba(16, 12, 24, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(8, 7, 12, 0.5);
+}
+
+.turntable-quick-btn:hover {
+  background: var(--color-surface-secondary);
+  border-color: var(--color-muted-lilac);
+  color: var(--color-text-primary);
+}
+
+.turntable-quick-btn.active {
+  background: rgba(183, 227, 59, 0.12);
+  border-color: var(--color-acid-lime);
+  color: var(--color-acid-lime);
+}
+
+.spinning-icon {
+  animation: spinTurntable 4s linear infinite;
+}
+
+@keyframes spinTurntable {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+/* =============================================================================
+   MOBILE VIEWPORT REFINEMENTS FOR SHOWROOM & EDITORIAL HEADERS
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .hero-viewport.minimalist-hero {
+    padding: 130px 20px 36px;
+  }
+
+  .showroom-collection-dock {
+    top: 72px;
+    padding: 4px 6px;
+    gap: 4px;
+    max-width: 95vw;
+  }
+
+  .showroom-tab-btn {
+    padding: 6px 10px;
+    font-size: 7.5px;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-monumental-title {
+    font-size: clamp(34px, 8.5vw, 54px);
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+
+  .hero-monumental-subtitle {
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .hero-luxury-pathways {
+    gap: 8px;
+  }
+
+  .luxury-pathway-pill {
+    padding: 8px 14px;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+  }
+
+  .hero-floating-controls {
+    bottom: 20px;
+    left: 20px;
+  }
+
+  .hero-minimalist-scroll-cue {
+    display: none;
+  }
+}
