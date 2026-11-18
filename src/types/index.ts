@@ -1,4 +1,4 @@
-export type AtelierGender = 'men' | 'women';
+export type AtelierGender = 'kids' | 'men' | 'women';
 
 export type XRayStage = 'finished' | 'construction' | 'textile';
 
@@ -6,6 +6,7 @@ export type GarmentCameraView = 'front' | 'threeQuarter' | 'side' | 'back' | 'ma
 
 export type PageId =
   | 'home'
+  | 'kids'
   | 'men'
   | 'women'
   | 'collections'
@@ -57,6 +58,7 @@ export interface ProductRecord {
   subtitle: string;
   gender: AtelierGender;
   category: string;
+  ageGroup?: string;
   price: number;
   currency: string;
   leadTimeWeeks: number;
@@ -65,6 +67,9 @@ export interface ProductRecord {
   silhouette: string;
   primaryFabric: string;
   lining: string;
+  hypoallergenic?: boolean;
+  growAllowance?: string;
+  parentGuide?: string;
   details: string[];
   materials: {
     composition: string;
@@ -109,11 +114,15 @@ export interface AtelierCustomizationConfig {
   colorName: string;
   colorHex: string;
   lapelStyle: string;
+  collarStyle?: string;
   buttonStyle: string;
   liningStyle: string;
   monogramText: string;
   measurementsType: 'standard' | 'made-to-measure';
   size: string;
+  childAge?: string;
+  childHeightCm?: string;
+  shoulderToHemInches?: string;
   clientNotes: string;
 }
 

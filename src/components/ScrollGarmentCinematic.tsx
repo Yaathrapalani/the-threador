@@ -20,6 +20,63 @@ interface RevealPhase {
   focusPoint: string;
 }
 
+const KIDS_PHASES: RevealPhase[] = [
+  {
+    phaseIndex: 1,
+    phaseCode: 'PHASE 01 — HEIRLOOM SILHOUETTE',
+    title: 'Child Proportioned Silhouette',
+    headline: 'Sculpted for Joyful Movement & Poise.',
+    body: 'Designed specifically for authentic child proportions (approx 6–8Y scale). Soft rounded shoulders, gentle natural waist, and weightless organza tiers engineered for childhood celebration.',
+    craftMetrics: '1,120 MM Silhouette • 28 Pattern Pieces',
+    focusPoint: 'Child Anatomical Stance'
+  },
+  {
+    phaseIndex: 2,
+    phaseCode: 'PHASE 02 — THE SCALLOPED COLLAR',
+    title: 'Peter Pan Scalloped Neckline',
+    headline: 'Double-Faced Silk Cotton Framing.',
+    body: 'Hand-turned scalloped Peter Pan collar with zero sharp edges. Features 100% hypoallergenic organic mulberry silk lining against tender skin with a protective fabric-backed zipper guard.',
+    craftMetrics: '100% Hypoallergenic Silk • Tagless Construction',
+    focusPoint: 'Collar & Neckline Comfort'
+  },
+  {
+    phaseIndex: 3,
+    phaseCode: 'PHASE 03 — BOTANICAL EMBROIDERY',
+    title: 'Garden Flora Zardozi Tendrils',
+    headline: 'Soft Gold & Rose Silk Threadwork.',
+    body: 'Delicate climbing jasmine and rose vine motifs hand-embroidered across the empire bodice. Flexible metallic thread is couched with featherlight tension to prevent stiffness or skin friction.',
+    craftMetrics: '22,000 Micro Stitches • Flexible Gold Wire',
+    focusPoint: 'Bodice Embroidered Vines'
+  },
+  {
+    phaseIndex: 4,
+    phaseCode: 'PHASE 04 — SEED PEARL EMBELLISHMENT',
+    title: 'Luminous River Seed Pearls',
+    headline: 'Hand-Anchored Natural Seed Pearls.',
+    body: 'Petite 2mm natural freshwater river seed pearls individually anchored along the front placket with reinforced double silk thread, catching gallery light with subtle milky luster.',
+    craftMetrics: '36 Natural Seed Pearls • Double Silk Anchor',
+    focusPoint: 'Placket & Button Details'
+  },
+  {
+    phaseIndex: 5,
+    phaseCode: 'PHASE 05 — THE FLOATING SKIRT',
+    title: 'Triple-Tiered Organza Petals',
+    headline: '2.5-Inch Hidden French Seam Allowance.',
+    body: 'The dress rotates 360°, revealing the buoyant triple-tier skirt. Includes a generous 2.5-inch hidden internal French seam allowance allowing the heirloom piece to grow across milestone family celebrations.',
+    craftMetrics: '2.5" Growth Buffer • Triple-Tier Petals',
+    focusPoint: 'Tiered Flared Hemline'
+  },
+  {
+    phaseIndex: 6,
+    phaseCode: 'PHASE 06 — THE 3D ATELIER',
+    title: 'Personalize Your Child’s Heirloom',
+    headline: 'Bespoke Fitting & Custom Monogramming.',
+    body: 'Step directly into the 3D Atelier to customize fabric colorways, select mother-of-pearl buttons, embroider your child’s monogram onto the inner silk sash, or input bespoke growth measurements.',
+    craftMetrics: 'Made-to-Measure Child Bespoke Available',
+    focusPoint: 'Digital Atelier Customizer'
+  }
+];
+
 const WOMEN_PHASES: RevealPhase[] = [
   {
     phaseIndex: 1,
@@ -135,7 +192,7 @@ const MEN_PHASES: RevealPhase[] = [
 ];
 
 export function ScrollGarmentCinematic({
-  initialGender = 'women',
+  initialGender = 'kids',
   onNavigatePage,
   onOpenProductDetail
 }: ScrollGarmentCinematicProps) {
@@ -148,15 +205,25 @@ export function ScrollGarmentCinematic({
   const videoRef = useRef<HTMLVideoElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  const phases = selectedGender === 'women' ? WOMEN_PHASES : MEN_PHASES;
+  const phases =
+    selectedGender === 'kids'
+      ? KIDS_PHASES
+      : selectedGender === 'women'
+      ? WOMEN_PHASES
+      : MEN_PHASES;
   const currentPhase = phases[activePhaseIndex] || phases[0];
 
   const videoSrc =
-    selectedGender === 'women'
-      ? '/assets/videos/womens-couture-reveal-1080p.mp4'
-      : '/assets/videos/mens-tailored-reveal-1080p.mp4';
+    selectedGender === 'men'
+      ? '/assets/videos/mens-tailored-reveal-1080p.mp4'
+      : '/assets/videos/womens-couture-reveal-1080p.mp4';
 
-  const productId = selectedGender === 'women' ? 'THREADOR-W-001' : 'THREADOR-M-001';
+  const productId =
+    selectedGender === 'kids'
+      ? 'THREADOR-K-001'
+      : selectedGender === 'women'
+      ? 'THREADOR-W-001'
+      : 'THREADOR-M-001';
 
   // Synchronise video playback to manual phase selection
   const handleSelectPhase = (index: number) => {
@@ -219,11 +286,19 @@ export function ScrollGarmentCinematic({
         <div className="cinematic-gender-switch">
           <button
             type="button"
+            className={`gender-switch-btn ${selectedGender === 'kids' ? 'active' : ''}`}
+            onClick={() => handleSwitchGender('kids')}
+          >
+            <Sparkles size={11} />
+            <span>01 / KIDS: HEIRLOOM COUTURE</span>
+          </button>
+          <button
+            type="button"
             className={`gender-switch-btn ${selectedGender === 'women' ? 'active' : ''}`}
             onClick={() => handleSwitchGender('women')}
           >
             <Sparkles size={11} />
-            <span>01 / WOMEN: THE ATELIER GOWN</span>
+            <span>02 / WOMEN: ATELIER GOWN</span>
           </button>
           <button
             type="button"
@@ -231,7 +306,7 @@ export function ScrollGarmentCinematic({
             onClick={() => handleSwitchGender('men')}
           >
             <Scissors size={11} />
-            <span>02 / MEN: THE TAILORED BLAZER</span>
+            <span>03 / MEN: TAILORED BLAZER</span>
           </button>
         </div>
 
@@ -276,8 +351,17 @@ export function ScrollGarmentCinematic({
           </div>
         ) : (
           <div className="three-viewport-wrapper">
-            {selectedGender === 'women' ? (
+            {selectedGender === 'kids' ? (
               <HeroCanvas
+                gender="kids"
+                scrollProgress={0.45}
+                xrayMode="finished"
+                forcedView={null}
+                isTurntableActive={true}
+              />
+            ) : selectedGender === 'women' ? (
+              <HeroCanvas
+                gender="women"
                 scrollProgress={0.45}
                 xrayMode="finished"
                 forcedView={null}

@@ -2,60 +2,44 @@
 
 ## 1. Overview & Rendering Philosophy
 
-THE THREADOR implements a production-grade 3D WebGL pipeline built on Three.js, React Three Fiber (R3F), and Drei. The pipeline achieves museum-grade realism without relying on multi-hundred-megabyte raw CAD assets, combining procedural geometry, physically based rendering (PBR) shader parameters, multi-source studio lighting, and smooth camera choreography.
+THE THREADOR implements a production-grade 3D WebGL pipeline built on Three.js, React Three Fiber (R3F), and Drei. The pipeline achieves museum-grade realism across three distinct collections: **KIDS (Primary)**, **MEN**, and **WOMEN**.
 
 ---
 
 ## 2. Garment Asset Architecture
 
-### 2.1. Womenswear: The Haute Couture Champagne Gown (`src/scene/CoutureGown.tsx`)
-The gown is engineered as a layered sculptural silhouette consisting of:
-1. **Architectural Inner Bodice:**
-   - Sculpted corset silhouette with tailored waist pinch.
-   - PBR Material: Champagne silk organza base with subtle transmission (`roughness: 0.28`, `metalness: 0.05`, `sheen: 0.85`, `sheenColor: #FDFBF7`).
-2. **Volumetric Layered Skirt & Train:**
-   - Layered petal meshes generating natural folds, cascading volume, and natural gravity falloff.
-   - Dynamic vertex wind displacement subtly breathing with time-elapsed animation.
-3. **Botanical Embroidery & River Pearl Embellishments:**
-   - 3D procedural metallic gold thread relief following organic botanical vines.
-   - Hand-placed river pearl instances with high clearcoat reflection (`clearcoat: 0.95`, `clearcoatRoughness: 0.08`).
+### 2.1. Children's Luxury Collection (Primary Focus)
 
-### 2.2. Menswear: The Savile-Inspired Tailored Blazer (`src/scene/MensBlazerMannequin.tsx`)
-The men's silhouette delivers crisp, architectural tailoring:
-1. **Double-Breasted Torso & Shoulder Construction:**
-   - Structured drop-8 stance with roped sleeve heads and floating horsehair chest canvas.
-   - PBR Material: Midnight navy Super 150s Merino wool with fine twill normal structure (`roughness: 0.72`, `metalness: 0.02`, `sheen: 0.45`).
-2. **Peak Lapels & Hand AMF Pick-Stitching:**
-   - Wide 4.25-inch peak lapels with subtle dimensional offset.
-   - Hand-stitched AMF edge simulation along lapel borders and pocket flaps.
-3. **Real Horn Buttons & Dual Vent Tailoring:**
-   - Double-breasted 6x2 button placement with natural polished horn specular response.
-   - Working 4-button functional surgeon's cuffs.
+#### A. Authentic Child-Proportioned Couture Mannequin (`src/scene/KidsMannequin.tsx`)
+Unlike scaled-down adult models, the child dressform is anatomically engineered specifically for children (approx. 6–8 year old scale):
+- **Natural Child Proportions**: 1:5.2 head-to-body proportion ratio, softer rounded shoulder slopes, shorter cylindrical torso, and natural unpinched waist.
+- **Museum Stand**: Cast bronze pedestal base with brushed champagne brass riser pole and height-adjustment collar ring.
+- **Finish**: Fine French porcelain linen canvas with subtle weave bump.
 
-### 2.3. Realistic Couture Mannequin (`src/scene/CoutureMannequin.tsx`)
-- Matte charcoal / warm graphite museum-grade finish.
-- Minimalist editorial proportions (elongated neck, streamlined anatomical contours, no distracting facial features).
-- Brushed champagne brass articulation rings at neck and shoulder junctions.
+#### B. The Petit Fleur Heirloom Silk Organza Gown (`src/scene/KidsOccasionDress.tsx`)
+- **Bodice & Collar**: Scalloped double-faced Peter Pan collar, empire waistline, and delicate puff cap sleeves.
+- **Buoyant Skirt**: Triple-tiered organza bell flare with harmonic natural gravity, subtle breathing displacement, and a wide silk satin sash with spine bow.
+- **Embellishments**: Micro gold-wire botanical vine relief and 36 hand-anchored freshwater river seed pearls along the front placket.
+- **PBR Specifications**: `roughness: 0.32`, `metalness: 0.04`, `opacity: 0.94`, `sheen: 0.85`.
+
+#### C. The Little Prince Royal Velvet Bandhgala (`src/scene/KidsFestiveJacket.tsx`)
+- **Structure**: Contoured mandarin collar stand with gold zardozi piping, soft pagoda shoulders, seven faceted crest buttons, and breast welt pocket with folded ivory silk square.
 
 ---
 
-## 3. Lighting & Studio Environment (`src/scene/studioLighting.ts`)
-
-To avoid flat unconvincing renders, the Three.js viewport utilizes a bespoke 5-point studio lighting rig:
-- **Key Light:** Warm directional light (3800K, intensity: 2.2) positioned at 45° elevation to create soft volumetric shadows in fabric drape folds.
-- **Fill Light:** Cool soft ambient fill (5400K, intensity: 1.1) softening contrast and revealing embroidery details in shadow areas.
-- **Back/Rim Light:** Sharp high-angle rim light (4200K, intensity: 2.8) outlining silhouette contours and accentuating organza translucency and wool shoulder roll.
-- **Under-Glow Light:** Subtle warm bounce (intensity: 0.4) mimicking reflection from warm limestone gallery flooring.
-- **Top Down Accent:** Narrow spotlight emphasizing shoulder line and collar craft.
+### 2.2. Menswear: The Savile-Inspired Tailored Blazer (`src/scene/AtelierDualScene.tsx`)
+- **Construction**: Floating unbleached Mongolian horsehair canvas, structured drop-8 stance, wide silk satin peak lapels, and 0.5mm AMF hand-stitched borders.
+- **Buttons & Cuffs**: Double-breasted 6x2 brass crest placement and functioning surgeon's cuffs.
 
 ---
 
-## 4. Camera Choreography & Angle Presets
+### 2.3. Womenswear: The Haute Couture Champagne Gown (`src/scene/CoutureGown.tsx`)
+- **Silhouette**: French silk organza cut on a 45° bias, ten continuous spiral steel boning channels, botanical aari embroidery, and 45 natural freshwater river pearls.
 
-The interactive 3D ateliers (`HeroCanvas`, `AtelierCanvas`, `AtelierWorkspace`) support four calibrated luxury camera angles:
-1. **Front Full View (`front`):** Camera at `[0, 0, 4.8]` — Perfect symmetrical editorial framing of the complete garment.
-2. **Shoulder & Lapel Macro (`detail`):** Camera at `[0.3, 0.6, 2.2]` — Focus on lapel pick-stitching, collar stand, and bodice embroidery.
-3. **Profile Stance (`side`):** Camera at `[3.2, 0.2, 2.8]` — Inspection of side drape, waist suppression, and sleeve pitch.
-4. **Train & Back Vent (`back`):** Camera at `[0, -0.2, -4.6]` — View of cascading train, back seam symmetry, and dual jacket vents.
+---
 
-Smooth easing and damping (`lerp` factors between 0.05 and 0.08) prevent jarring jumps, ensuring an effortless luxury navigation feel.
+## 3. Studio Lighting Rig & Environment
+
+- **Kids Lighting**: Luminous champagne daylight (4200K, intensity: 4.4) paired with gentle powder blue and soft butter bounce fills.
+- **Men's Lighting**: High-contrast directional illumination (5400K, intensity: 4.8) defining roped shoulders and lapel fold depth.
+- **Women's Lighting**: Warm golden chiaroscuro (3800K, intensity: 4.2) highlighting organza translucency and pearl iridescence.

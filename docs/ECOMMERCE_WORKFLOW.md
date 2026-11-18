@@ -2,32 +2,31 @@
 
 ## 1. Commerce System Architecture
 
-THE THREADOR e-commerce platform provides an end-to-end luxury commerce journey tailored specifically for bespoke haute couture and made-to-measure tailoring.
+THE THREADOR e-commerce platform provides an end-to-end luxury commerce journey tailored specifically for children's couture, bespoke tailoring, and made-to-measure eveningwear.
 
 ```
 +-------------------------------------------------------------------------------------------------------+
 |                                           DISCOVERY                                                   |
-|   - 1080p Video Cinematic Reveal                                                                     |
-|   - Resizable Men / Women Atelier Split-Screen                                                        |
-|   - Dedicated Storefronts (/men and /women) with Filter & Sorting                                     |
+|   - 1080p Video & 3D Interactive Reveal across KIDS (Primary), MEN, and WOMEN                         |
+|   - Dedicated Storefronts: /kids, /men, and /women with Age & Category Filtering                      |
 +-------------------------------------------------------------------------------------------------------+
                                                     |
                                                     v
 +-------------------------------------------------------------------------------------------------------+
 |                                       PRODUCT DETAIL & BESPOKE                                        |
 |   - High-Res Gallery, Interactive 3D Model, 1080p Video Preview                                       |
-|   - Tailoring Specs: Craft Hours, Stitch Count, Construction Type                                     |
-|   - Standard Sizing (36R - 46R / IT 36 - 46) OR Bespoke Made-to-Measure                               |
-|   - Direct Atelier Configuration Link & WhatsApp Concierge Inquiry                                    |
+|   - Parent Sizing & Comfort Guide: Organic Silk Linings, 2.5" Growth Allowances                       |
+|   - Standard Sizing (2Y - 14Y / 36R - 46R) OR Bespoke Made-to-Measure                                 |
+|   - Direct Atelier Configuration Link & WhatsApp Concierge Booking                                    |
 +-------------------------------------------------------------------------------------------------------+
                                                     |
                                                     v
 +-------------------------------------------------------------------------------------------------------+
 |                                         THE 3D ATELIER                                                |
-|   - Live 3D Canvas with Real-Time Fabric & Color Swatching                                            |
-|   - Lapel & Silhouette Selections                                                                     |
-|   - Horn & Pearl Button Accents                                                                       |
-|   - Custom Monogramming & Bespoke Measurements (Chest, Waist, Sleeve, Height)                         |
+|   - Live 3D Canvas with Real-Time Fabric & Color Swatching across Kids, Men, and Women                |
+|   - Collar, Lapel & Silhouette Selections                                                             |
+|   - Freshwater Seed Pearls, Mother-of-Pearl & Crest Buttons                                           |
+|   - Custom Monogramming & Bespoke Child Measurements (Age, Height, Chest, Waist, Hem)                 |
 +-------------------------------------------------------------------------------------------------------+
                                                     |
                                                     v
@@ -41,7 +40,7 @@ THE THREADOR e-commerce platform provides an end-to-end luxury commerce journey 
                                                     v
 +-------------------------------------------------------------------------------------------------------+
 |                                     CHECKOUT & QUOTATION MODAL                                        |
-|   - Client Information & Delivery Address                                                             |
+|   - Parent / Client Information & Delivery Address                                                    |
 |   - Consultation Scheduling (In-Person Atelier Fitting / Master Tailor Video Call)                    |
 |   - Payment Stubs: Razorpay (Cards/NetBanking), UPI Instant, Wire Transfer, Atelier Invoice          |
 |   - Immediate Order Confirmation & Dedicated Reference Tracking Code                                  |
@@ -50,82 +49,24 @@ THE THREADOR e-commerce platform provides an end-to-end luxury commerce journey 
 
 ---
 
-## 2. Product Catalog Schema (`src/data/storeProducts.ts`)
+## 2. Product Catalog Schema (14 Handcrafted Garments)
 
-Every garment in THE THREADOR catalog adheres to the `ProductRecord` interface:
+### 2.1. Children's Luxury Collection (6 Primary Products)
+1. **The Petit Fleur Heirloom Silk Organza Gown** (`THREADOR-K-001`) — ₹38,000 • 110 craft hours, 22,000 micro stitches, French silk organza, hypoallergenic organic silk lining, 2.5" growth allowance.
+2. **The Little Prince Royal Velvet Bandhgala** (`THREADOR-K-002`) — ₹42,000 • 125 craft hours, 26,000 hand stitches, English cotton velvet, hand zardozi collar, faceted crest buttons.
+3. **The Ceremonial Tiered Silk Tulle Occasion Dress** (`THREADOR-K-003`) — ₹34,000 • 95 craft hours, 19,500 stitches, gossamer silk tulle, mother-of-pearl buttons.
+4. **The Junior Savile Double-Breasted Wool Blazer** (`THREADOR-K-004`) — ₹39,000 • 115 craft hours, 24,000 stitches, Super 130s Merino flannel, functioning surgeon's cuffs.
+5. **The Banarasi Brocade Heirloom Anarkali & Capelet** (`THREADOR-K-005`) — ₹46,000 • 140 craft hours, 31,000 stitches, handloom Varanasi Katan silk zari brocade, organic mulmul lining.
+6. **The Heritage Handspun Matka Silk Kurta & Nehru Waistcoat** (`THREADOR-K-006`) — ₹32,000 • 85 craft hours, 18,000 stitches, indigenous handloom matka silk, pure linen waistcoat.
 
-```typescript
-export interface ProductRecord {
-  id: string;
-  sku: string;
-  gender: 'men' | 'women';
-  name: string;
-  tagline: string;
-  description: string;
-  priceINR: number;
-  priceUSD: number;
-  category: 'couture-gowns' | 'evening-dresses' | 'capes-stoles' | 'tailored-blazers' | 'formal-suits' | 'bandhgala-achkan';
-  materials: string[];
-  craftHours: number;
-  stitchCount: number;
-  leadTimeWeeks: number;
-  availableSizes: string[];
-  inStock: boolean;
-  featured: boolean;
-  colorways: { name: string; hex: string }[];
-  pbrSpec: {
-    baseColor: string;
-    roughness: number;
-    metalness: number;
-    sheen: number;
-    fabricType: string;
-  };
-  dimensions: {
-    sampleLength: string;
-    chestOrBust: string;
-    waist: string;
-  };
-  images: string[];
-  videoSrc?: string;
-  details: string[];
-  careInstructions: string[];
-}
-```
+### 2.2. Men's Architectural Tailoring (4 Products)
+1. **The Midnight Tailored Blazer** (`THREADOR-M-001`) — ₹48,000 • 145 craft hours, 28,000 stitches.
+2. **The Heritage Silk Bandhgala** (`THREADOR-M-002`) — ₹56,000 • 160 craft hours, 32,000 stitches.
+3. **The Architectural Greatcoat** (`THREADOR-M-003`) — ₹72,000 • 185 craft hours, 36,000 stitches.
+4. **The Ceremonial Zardozi Achkan** (`THREADOR-M-004`) — ₹84,000 • 210 craft hours, 45,000 stitches.
 
-### Initial Curated Garments (8 Bespoke Items):
-1. **Men's Midnight Double-Breasted Tailored Blazer** (`mens-tailored-blazer-01`) — Super 150s Merino wool, 42 craft hours, 18,500 stitches.
-2. **Men's Imperial Velvet Bandhgala** (`mens-bandhgala-velvet-02`) — English silk velvet, hand zardozi collar, 58 craft hours.
-3. **Men's Double-Faced Cashmere Greatcoat** (`mens-greatcoat-cashmere-03`) — Pure Mongolian cashmere, unlined horn button finish, 64 craft hours.
-4. **Men's Royal Silk Jamdani Achkan** (`mens-achkan-jamdani-04`) — Handloom Benarasi silk, 85 craft hours.
-5. **Women's Champagne Atelier Organza Gown** (`womens-couture-gown-01`) — Multi-layer French silk organza with botanical embroidery and freshwater river pearls, 120 craft hours, 48,000 stitches.
-6. **Women's Sculptural Peplum Evening Gown** (`womens-peplum-gown-02`) — Heavy silk gazar with structural crinoline support, 84 craft hours.
-7. **Women's Bias-Cut Silk Crepe Evening Dress** (`womens-crepe-dress-03`) — Double silk Moroccan crepe, cascading back cowl, 48 craft hours.
-8. **Women's Hand-Woven Banarasi Stage Cape** (`womens-banarasi-cape-04`) — Pure Katan silk with gold zari border, 96 craft hours.
-
----
-
-## 3. Cart Service (`src/services/cartService.ts`)
-
-The shopping bag state is managed via a dedicated TypeScript singleton:
-- **`getItems(): CartItem[]`**: Reads parsed items from browser `localStorage`.
-- **`addItem(product, size, colorway, customization?, quantity?)`**: Creates or increments cart entries.
-- **`updateQuantity(itemId, quantity)`**: Safely adjusts item count, removing the item when quantity is 0.
-- **`removeItem(itemId)`**: Deletes an item from the cart.
-- **`clearCart()`**: Flushes the cart.
-- **`getCartCount()`**: Returns total units across all cart items.
-- **`getSubtotal()`**: Returns total cart valuation in both INR and USD.
-- **Event Bus Notification**: Fires `window.dispatchEvent(new CustomEvent('the-threador-cart-update'))` on every mutation, triggering automatic re-renders in `Header` badges and drawer contents without prop drilling.
-
----
-
-## 4. Checkout & Quotation Workflow
-
-Because haute couture and bespoke tailoring require custom fabric allocation, pattern cutting, and personalized measurements:
-1. **Quotation & Fitting Request**:
-   - The user reviews their bag and clicks **Proceed to Bespoke Checkout**.
-   - An elegant modal collects the client's contact information, delivery destination, bespoke tailoring notes, and preferred consultation mode (In-person atelier fitting or Master tailor video appointment).
-2. **Payment Processing**:
-   - Offers multiple payment channels: **Razorpay** (All major debit/credit cards, netbanking), **UPI Instant** (Google Pay, PhonePe, Paytm), **Bank Wire Transfer** (SWIFT/NEFT), or **Atelier Invoice** (50% bespoke deposit + 50% post-fitting balance).
-3. **Confirmation & Reference ID**:
-   - Generates a bespoke order code (e.g., `TH-B87F2K-2026`).
-   - Clears the active shopping bag and presents a completion voucher with direct WhatsApp Concierge routing.
+### 2.3. Women's Haute Couture (4 Products)
+1. **The Champagne Atelier Gown** (`THREADOR-W-001`) — ₹64,000 • 180 craft hours, 42,000 stitches.
+2. **The Tiered Fluted Peplum Gown** (`THREADOR-W-002`) — ₹58,000 • 155 craft hours, 34,000 stitches.
+3. **The Botanical Zardozi Evening Dress** (`THREADOR-W-003`) — ₹68,000 • 190 craft hours, 48,000 stitches.
+4. **The Banarasi Stage Cape** (`THREADOR-W-004`) — ₹42,000 • 120 craft hours, 26,000 stitches.

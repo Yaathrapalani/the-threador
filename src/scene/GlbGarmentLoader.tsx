@@ -3,17 +3,44 @@ import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { CoutureMannequin } from './CoutureMannequin';
 import { CoutureGown } from './CoutureGown';
-import type { XRayStage, ModelAssetInfo } from '../types';
+import { KidsMannequin } from './KidsMannequin';
+import { KidsOccasionDress } from './KidsOccasionDress';
+import { ProceduralMensBlazer } from './AtelierDualScene';
+import type { XRayStage, ModelAssetInfo, AtelierGender } from '../types';
 
 interface GlbGarmentLoaderProps {
+  gender?: AtelierGender;
   xrayMode?: XRayStage;
   onAssetInfoChange?: (info: ModelAssetInfo) => void;
 }
 
 // Procedural fallback component if GLB is downloading or encounters network error
-function ProceduralCoutureFallback({ xrayMode }: { xrayMode: XRayStage }) {
+function ProceduralCoutureFallback({
+  gender,
+  xrayMode
+}: {
+  gender: AtelierGender;
+  xrayMode: XRayStage;
+}) {
+  if (gender === 'kids') {
+    return (
+      <group name="kids-couture-rig">
+        <KidsMannequin finish="porcelain-linen" />
+        <KidsOccasionDress wireframe={xrayMode === 'construction'} />
+      </group>
+    );
+  }
+
+  if (gender === 'men') {
+    return (
+      <group name="mens-tailoring-rig">
+        <ProceduralMensBlazer />
+      </group>
+    );
+  }
+
   return (
-    <group name="procedural-couture-fallback">
+    <group name="womens-couture-fallback">
       <CoutureMannequin finish="linen-brass" />
       <CoutureGown xrayMode={xrayMode} />
     </group>
@@ -100,6 +127,7 @@ function ProductionGlbModel({
 }
 
 export function GlbGarmentLoader({
+  gender = 'kids',
   xrayMode = 'finished',
   onAssetInfoChange
 }: GlbGarmentLoaderProps) {
@@ -108,6 +136,19 @@ export function GlbGarmentLoader({
   // Check if public/models/hero-garment.glb exists on the server and update telemetry
   useEffect(() => {
     let isMounted = true;
+
+    if (gender === 'kids') {
+      onAssetInfoChange?.({
+        isExternalGlb: false,
+        modelPath: 'Children’s Haute Couture Heirloom Gown (Proportioned Scale)',
+        vertexCount: 24800,
+        triangles: 46200,
+        shaderTechnique: 'Layered Silk Organza, Scalloped Collar & Pearl Embellishment',
+        status: 'procedural-couture-active'
+      });
+      return;
+    }
+
     fetch('/models/hero-garment.glb', { method: 'HEAD' })
       .then((res) => {
         if (!isMounted) return;
@@ -149,16 +190,20 @@ export function GlbGarmentLoader({
     return () => {
       isMounted = false;
     };
-  }, [onAssetInfoChange]);
+  }, [gender, onAssetInfoChange]);
 
   return (
     <group name="hero-garment-rig">
-      {hasExternalGlb ? (
-        <Suspense fallback={<ProceduralCoutureFallback xrayMode={xrayMode} />}>
+      {gender === 'kids' ? (
+        <ProceduralCoutureFallback gender="kids" xrayMode={xrayMode} />
+      ) : gender === 'men' ? (
+        <ProceduralCoutureFallback gender="men" xrayMode={xrayMode} />
+      ) : hasExternalGlb ? (
+        <Suspense fallback={<ProceduralCoutureFallback gender="women" xrayMode={xrayMode} />}>
           <ProductionGlbModel url="/models/hero-garment.glb" xrayMode={xrayMode} />
         </Suspense>
       ) : (
-        <ProceduralCoutureFallback xrayMode={xrayMode} />
+        <ProceduralCoutureFallback gender="women" xrayMode={xrayMode} />
       )}
     </group>
   );

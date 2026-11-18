@@ -17,8 +17,10 @@ export function StoreCollectionPage({
   onNavigatePage,
   onOpenCart
 }: StoreCollectionPageProps) {
+  const isKids = gender === 'kids';
   const isMen = gender === 'men';
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedAge, setSelectedAge] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'craftsmanship'>('featured');
   const [addedProductId, setAddedProductId] = useState<string | null>(null);
 
@@ -33,12 +35,27 @@ export function StoreCollectionPage({
     return ['all', ...cats];
   }, [genderProducts]);
 
+  // Age brackets for Kids
+  const ageBrackets = ['all', '2–4Y', '4–6Y', '6–8Y', '8–10Y', '10–14Y'];
+
   // Filtered and sorted products
   const displayedProducts = useMemo(() => {
     let result = genderProducts;
 
     if (selectedCategory !== 'all') {
       result = result.filter((p) => p.category === selectedCategory);
+    }
+
+    if (isKids && selectedAge !== 'all') {
+      result = result.filter((p) => {
+        if (!p.ageGroup) return true;
+        if (selectedAge === '2–4Y') return p.ageGroup.includes('2') || p.ageGroup.includes('3') || p.ageGroup.includes('4');
+        if (selectedAge === '4–6Y') return p.ageGroup.includes('4') || p.ageGroup.includes('5') || p.ageGroup.includes('6');
+        if (selectedAge === '6–8Y') return p.ageGroup.includes('6') || p.ageGroup.includes('7') || p.ageGroup.includes('8');
+        if (selectedAge === '8–10Y') return p.ageGroup.includes('8') || p.ageGroup.includes('9') || p.ageGroup.includes('10');
+        if (selectedAge === '10–14Y') return p.ageGroup.includes('10') || p.ageGroup.includes('12') || p.ageGroup.includes('14');
+        return true;
+      });
     }
 
     if (sortBy === 'price-low') {
@@ -50,7 +67,7 @@ export function StoreCollectionPage({
     }
 
     return result;
-  }, [genderProducts, selectedCategory, sortBy]);
+  }, [genderProducts, selectedCategory, selectedAge, isKids, sortBy]);
 
   const handleQuickAdd = (product: ProductRecord, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -65,17 +82,29 @@ export function StoreCollectionPage({
   };
 
   return (
-    <div className={`store-collection-page ${isMen ? 'men-collection' : 'women-collection'}`}>
+    <div className={`store-collection-page ${isKids ? 'kids-collection' : isMen ? 'men-collection' : 'women-collection'}`}>
       {/* 1. EDITORIAL COLLECTION HERO BANNER */}
       <section className="collection-hero-banner">
         <div className="collection-hero-content">
           <div className="collection-taxonomy-pill">
-            {isMen ? <Scissors size={12} /> : <Sparkles size={12} />}
-            <span>THE THREADOR ATELIER • {isMen ? '01 / MEN’S ARCHITECTURE' : '02 / WOMEN’S HAUTE COUTURE'}</span>
+            {isKids ? <Sparkles size={12} /> : isMen ? <Scissors size={12} /> : <Sparkles size={12} />}
+            <span>
+              THE THREADOR ATELIER •{' '}
+              {isKids
+                ? '01 / CHILDREN’S HAUTE COUTURE (FEATURED)'
+                : isMen
+                ? '02 / MEN’S ARCHITECTURAL TAILORING'
+                : '03 / WOMEN’S HAUTE COUTURE'}
+            </span>
           </div>
 
           <h1 className="collection-hero-title">
-            {isMen ? (
+            {isKids ? (
+              <>
+                The Joy<br />
+                <i>of Celebration.</i>
+              </>
+            ) : isMen ? (
               <>
                 The Architecture<br />
                 <i>of Form.</i>
@@ -89,12 +118,21 @@ export function StoreCollectionPage({
           </h1>
 
           <p className="collection-hero-description">
-            {isMen
+            {isKids
+              ? 'Heirloom occasion wear, celebration gowns, tailored bandhgalas, and special garments crafted with unyielding couture standards, hypoallergenic organic silk linings, and generous grow-with-me seam allowances.'
+              : isMen
               ? 'Hand-canvassed double-breasted blazers, bespoke bandhgalas, and architectural ceremonial greatcoats. Engineered with unbleached horsehair floating canvas and zero synthetic fusibles.'
               : 'Sculptural fluted gowns, botanical metallic zardozi embroidery, and pure mulberry silk organza. Each garment is cut on a 45° bias and hand-boned for gravitational grace.'}
           </p>
 
           <div className="collection-hero-quick-switch">
+            <button
+              type="button"
+              className={`collection-switch-tab ${isKids ? 'active' : ''}`}
+              onClick={() => onNavigatePage('kids')}
+            >
+              KIDS’ COUTURE ({STORE_PRODUCTS.filter((p) => p.gender === 'kids').length})
+            </button>
             <button
               type="button"
               className={`collection-switch-tab ${isMen ? 'active' : ''}`}
@@ -104,7 +142,7 @@ export function StoreCollectionPage({
             </button>
             <button
               type="button"
-              className={`collection-switch-tab ${!isMen ? 'active' : ''}`}
+              className={`collection-switch-tab ${!isKids && !isMen ? 'active' : ''}`}
               onClick={() => onNavigatePage('women')}
             >
               WOMEN’S COLLECTION ({STORE_PRODUCTS.filter((p) => p.gender === 'women').length})
@@ -135,6 +173,23 @@ export function StoreCollectionPage({
             </button>
           ))}
         </div>
+
+        {/* Age group filter for Kids */}
+        {isKids && (
+          <div className="age-filter-group">
+            <span className="age-filter-label">AGE:</span>
+            {ageBrackets.map((age) => (
+              <button
+                key={age}
+                type="button"
+                className={`age-pill-btn ${selectedAge === age ? 'active' : ''}`}
+                onClick={() => setSelectedAge(age)}
+              >
+                {age === 'all' ? 'ALL AGES' : age}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="sorting-group">
           <SlidersHorizontal size={13} className="sort-icon" />
@@ -215,6 +270,16 @@ export function StoreCollectionPage({
                 <h3 className="product-card-title">{product.name}</h3>
                 <p className="product-card-subtitle">{product.subtitle}</p>
 
+                {/* Age & Hypoallergenic Badges for Children's Collection */}
+                {product.ageGroup && (
+                  <div className="product-age-badge-row">
+                    <span className="age-group-pill">{product.ageGroup}</span>
+                    {product.hypoallergenic && (
+                      <span className="hypoallergenic-pill">ORGANIC SILK LINING</span>
+                    )}
+                  </div>
+                )}
+
                 <div className="product-materials-line">
                   <span className="fabric-spec">{product.primaryFabric}</span>
                 </div>
@@ -271,3 +336,4 @@ export function StoreCollectionPage({
     </div>
   );
 }
+

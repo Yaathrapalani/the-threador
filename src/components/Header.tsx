@@ -68,6 +68,14 @@ export function Header({
 
           <button
             type="button"
+            className={`nav-link-btn kids-primary-nav ${activePage === 'kids' ? 'active' : ''}`}
+            onClick={() => handleNav('kids')}
+          >
+            <Sparkles size={11} className="inline-nav-icon" /> KIDS COUTURE
+          </button>
+
+          <button
+            type="button"
             className={`nav-link-btn ${activePage === 'men' ? 'active' : ''}`}
             onClick={() => handleNav('men')}
           >
@@ -185,6 +193,13 @@ export function Header({
               onClick={() => handleNav('home')}
             >
               HOME
+            </button>
+            <button
+              type="button"
+              className={`drawer-link kids-drawer-link ${activePage === 'kids' ? 'active' : ''}`}
+              onClick={() => handleNav('kids')}
+            >
+              KIDS HAUTE COUTURE (FEATURED)
             </button>
             <button
               type="button"

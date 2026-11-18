@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowDown, Sliders, ChevronUp, BookOpen, Drama } from 'lucide-react';
+import { ArrowDown, Sliders, ChevronUp, Drama, Sparkles, Scissors } from 'lucide-react';
 import { HeroCanvas } from '../scene/HeroCanvas';
 import { GarmentViewInspector } from './GarmentViewInspector';
 import type { ModelAssetInfo, PageId, GarmentCameraView } from '../types';
@@ -43,9 +43,10 @@ export function HeroSection({
 
   return (
     <section className="hero-viewport minimalist-hero" id="hero">
-      {/* 1. 3D HERO CANVAS - 4K Crisp Haute Couture Centerpiece */}
+      {/* 1. 3D HERO CANVAS - 4K Crisp Haute Couture Centerpiece (Children's Haute Couture Dressform) */}
       <div className="hero-scene-container">
         <HeroCanvas
+          gender="kids"
           scrollProgress={scrollProgress}
           xrayMode="finished"
           onStageChange={onStageChange}
@@ -68,24 +69,42 @@ export function HeroSection({
             structure, and stage? An extraordinary convergence of Indian textile arts and digital couture.
           </p>
 
-          {/* Discreet Luxury Pathways */}
+          {/* Discreet Luxury Collection Gateways */}
           <div className="hero-luxury-pathways">
             <button
               type="button"
-              className="luxury-pathway-pill primary"
-              onClick={() => onNavigatePage('annual-day')}
+              className="luxury-pathway-pill kids-pathway-pill primary"
+              onClick={() => onNavigatePage('kids')}
             >
-              <Drama size={13} />
-              <span>ANNUAL DAY COSTUMES</span>
+              <Sparkles size={12} />
+              <span>EXPLORE KIDS’ COUTURE</span>
             </button>
 
             <button
               type="button"
               className="luxury-pathway-pill secondary"
-              onClick={() => onNavigatePage('course')}
+              onClick={() => onNavigatePage('men')}
             >
-              <BookOpen size={13} />
-              <span>FASHION EDUCATION</span>
+              <Scissors size={12} />
+              <span>MEN’S TAILORING</span>
+            </button>
+
+            <button
+              type="button"
+              className="luxury-pathway-pill secondary"
+              onClick={() => onNavigatePage('women')}
+            >
+              <Sparkles size={12} />
+              <span>WOMEN’S ATELIER</span>
+            </button>
+
+            <button
+              type="button"
+              className="luxury-pathway-pill tertiary"
+              onClick={() => onNavigatePage('annual-day')}
+            >
+              <Drama size={12} />
+              <span>ANNUAL DAY</span>
             </button>
           </div>
         </div>

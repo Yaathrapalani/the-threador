@@ -4,9 +4,10 @@ import * as THREE from 'three';
 import { StudioEnvironment } from './StudioEnvironment';
 import { GlbGarmentLoader } from './GlbGarmentLoader';
 import { ScrollCameraController } from './ScrollCameraController';
-import type { ModelAssetInfo, XRayStage, GarmentCameraView } from '../types';
+import type { ModelAssetInfo, XRayStage, GarmentCameraView, AtelierGender } from '../types';
 
 interface HeroCanvasProps {
+  gender?: AtelierGender;
   scrollProgress: number;
   xrayMode?: XRayStage;
   onStageChange?: (stage: 'A' | 'B' | 'C' | 'D' | 'E') => void;
@@ -16,6 +17,7 @@ interface HeroCanvasProps {
 }
 
 export function HeroCanvas({
+  gender = 'kids',
   scrollProgress,
   xrayMode = 'finished',
   onStageChange,
@@ -87,6 +89,7 @@ export function HeroCanvas({
         {/* Garment Rig: Mannequin + Couture Gown + GLB Loader Pipeline */}
         <group ref={garmentRigRef} position={[0, 0, 0]}>
           <GlbGarmentLoader
+            gender={gender}
             xrayMode={xrayMode}
             onAssetInfoChange={onAssetInfoChange}
           />

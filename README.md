@@ -1,5 +1,5 @@
 # THE THREADOR
-### World-Class Luxury Fashion Commerce Platform, Immersive 3D Atelier & Textile Heritage Pavilion
+### World-Class Children's Luxury Fashion House, Men's & Women's Bespoke Collections, and 3D Atelier
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19.0-61dafb.svg)](https://react.dev/)
@@ -12,23 +12,40 @@
 
 ---
 
-## 1. Executive Summary
+## 1. Executive Summary & Brand Positioning
 
-**THE THREADOR** is a complete, production-grade luxury digital fashion platform that merges haute couture commerce, bespoke 3D garment craftsmanship, and experiential fashion education.
+**THE THREADOR** is a complete, production-grade luxury fashion destination curated around **Children's Luxury Fashion** as its primary commercial and visual focus, supported by independent and equally respected **MEN'S ARCHITECTURAL TAILORING** and **WOMEN'S HAUTE COUTURE** collections.
 
-Engineered with React 19, Three.js, React Three Fiber, and Tailwind CSS, the platform transcends conventional flat e-commerce storefronts by providing:
-1. **Minimalist 4K Opening Hero**: Ultra-refined luxury editorial presentation featuring a photorealistic, rotating 3D couture mannequin dressed in layered champagne organza.
-2. **Signature 1080p Cinematic Scroll Reveal**: A scrubbable 6-phase visual narrative driven by high-definition 1080p films with instant toggling into full interactive Three.js WebGL inspection.
-3. **Resizable MEN × WOMEN Split Atelier**: An interactive dual-world split-screen canvas with an interactive brass seam divider, allowing simultaneous exploration of tailored Menswear and haute couture Womenswear.
-4. **Dedicated Luxury Storefronts**: Complete catalogs for **Men** (`/men`) and **Women** (`/women`) featuring instant category filtering, price/craft-hour sorting, hover quick-adds, and bespoke Made-to-Measure pathways.
-5. **Product Detail Pages (PDP)**: Studio-grade product pages featuring 3D model interaction, 1080p video inspection reels, PBR fabric specifications, artisan craft hours, size guides, and direct add-to-bag integration.
-6. **The 3D Atelier Workspace**: A bespoke Made-to-Measure digital studio where clients select PBR luxury fabrics (Super 150s wool, French silk organza, Banarasi zari), customize lapels and buttons, enter custom monogramming, and input bespoke measurement specs.
-7. **Persistent Shopping Bag & Quotation Drawer**: A sliding cart drawer with `localStorage` persistence, custom event synchronization, real-time subtotal calculations, and a complete Bespoke Checkout & Consultation booking modal.
-8. **Institutional Pillars (Costume Atelier & Certification Courses)**: Dedicated enquiry workflows for School Annual Day theatrical productions (costuming 200–2,000+ students) and Parent Certification courses across Grades 1–8.
+Rejecting cartoonish nursery templates and generic children's e-commerce tropes, THE THREADOR applies playful sophistication, uncompromising haute couture craftsmanship, natural proportions, and museum-grade 3D WebGL presentation.
+
+Key Platform Deliverables:
+1. **Primary Children's Luxury Experience**: Dedicated `/kids` collection featuring occasion gowns, celebration bandhgalas, junior double-breasted tailoring, and heirloom Banarasi brocades. Every garment includes pure hypoallergenic organic silk linings, tagless interiors, and 2.5-inch hidden growth allowances.
+2. **True Child-Proportioned 3D Mannequin & Garments**: Anatomically engineered child dressform (`KidsMannequin.tsx`, approx. 6–8Y scale) with 3D celebration dresses (`KidsOccasionDress.tsx`) and tailored bandhgalas (`KidsFestiveJacket.tsx`).
+3. **Independent MEN & WOMEN Collections**: Complete, fully developed stores (`/men` and `/women`) with dedicated product dossiers, filtering, and bespoke sizing.
+4. **Signature 6-Phase Reveal Across 3 Collections**: Cinematic scroll reveal supporting **KIDS (Featured)**, **MEN**, and **WOMEN** with instant toggling into interactive 3D WebGL inspection.
+5. **3D Bespoke Atelier Workspace**: Digital customizer supporting all three collections with live PBR fabric swatching, colorways, collar/lapel styles, freshwater seed pearl / crest button accents, child monogramming, and made-to-measure growth inputs.
+6. **Parent-Centric Sizing & Shopping Bag**: Sliding persistent drawer (`localStorage`) with quotation checkout and WhatsApp Concierge booking.
 
 ---
 
-## 2. Platform Architecture & Directory Structure
+## 2. Re-Curated Master Colour System
+
+| Token | Hex | Semantic Role |
+| :--- | :--- | :--- |
+| `Porcelain` | `#F7F4EF` | Primary editorial background |
+| `Warm Ivory` | `#EEE7DC` | Secondary backgrounds & cards |
+| `Soft Sand` | `#D8C9B5` | Supporting surfaces & borders |
+| `Champagne` | `#C7AA83` | Restrained luxury accent |
+| `Deep Cocoa` | `#493B32` | Warm text accent |
+| `Ink Charcoal`| `#242321` | Primary typography |
+| `Muted Sage` | `#A8AE98` | Restrained secondary accent |
+| `Dusty Rose` | `#D5B8B0` | Children's couture accent |
+| `Powder Blue`| `#B9C9D5` | Children's couture accent |
+| `Soft Butter`| `#E8D9A8` | Children's couture accent |
+
+---
+
+## 3. Platform Architecture & Directory Structure
 
 ```
 story-behind-what-we-wear/
@@ -44,51 +61,37 @@ story-behind-what-we-wear/
 │   │   │   ├── mens-tailored-reveal-1080p.mp4       # 1080p 24fps master men's reveal (10.1MB)
 │   │   │   ├── threador-campaign-film-1080p.mp4     # 1080p 24fps architectural split showcase (4.5MB)
 │   │   │   └── frames/                              # High-resolution extracted keyframe contact sheets
-│   │   │       ├── womens-01s.jpg
-│   │   │       ├── womens-frame-05s.jpg
-│   │   │       ├── womens-09s.jpg
-│   │   │       ├── mens-01s.jpg
-│   │   │       ├── mens-frame-05s.jpg
-│   │   │       ├── mens-09s.jpg
-│   │   │       ├── campaign-01s.jpg
-│   │   │       ├── campaign-frame-05s.jpg
-│   │   │       └── campaign-09s.jpg
-│   └── models/                                      # External 3D GLB slot (hero-garment.glb)
 ├── src/
 │   ├── components/
-│   │   ├── Header.tsx                               # Luxury navigation with live bag counter
-│   │   ├── MinimalistHero.tsx                       # 4K minimalist hero with rotating 3D garment
-│   │   ├── ScrollGarmentCinematic.tsx               # 6-phase scrubbing video & Three.js canvas
-│   │   ├── DividedAtelier.tsx                       # Interactive resizable Men/Women split-screen
-│   │   ├── StoreCollectionPage.tsx                  # Dedicated storefront for Men & Women
-│   │   ├── ProductDetailPage.tsx                    # Luxury PDP with 3D/Video tabs & Add-to-Bag
-│   │   ├── AtelierWorkspace.tsx                     # Bespoke 3D design studio
+│   │   ├── Header.tsx                               # Luxury navigation featuring prominent KIDS COUTURE
+│   │   ├── HeroSection.tsx                          # 4K hero with rotating Children's Couture Dress
+│   │   ├── ScrollGarmentCinematic.tsx               # 6-phase reveal supporting KIDS, MEN & WOMEN
+│   │   ├── DividedAtelier.tsx                       # Interactive resizable split-screen
+│   │   ├── StoreCollectionPage.tsx                  # Dedicated storefront for Kids, Men & Women
+│   │   ├── ProductDetailPage.tsx                    # Luxury PDP with 3D/Video tabs & Parent Guide
+│   │   ├── AtelierWorkspace.tsx                     # 3D Bespoke design studio (Kids, Men, Women)
 │   │   ├── ShoppingBagDrawer.tsx                    # Sliding bag drawer with checkout quotation
 │   │   ├── GarmentXRaySection.tsx                   # Interactive structural garment X-Ray
 │   │   ├── AnnualDaySection.tsx                     # School costume atelier enquiry workflow
 │   │   ├── CourseEnrolmentSection.tsx               # Parent certification enrolment workflow
-│   │   ├── AboutUsSection.tsx                       # Heritage provenance & brand story
-│   │   ├── ContactSection.tsx                       # Global concierge & showroom addresses
-│   │   ├── LuxuryFooter.tsx                         # Editorial footer & manifesto
-│   │   └── FloatingWhatsApp.tsx                     # Floating direct concierge channel
+│   │   └── ...
 │   ├── scene/
-│   │   ├── HeroCanvas.tsx                           # Minimalist hero Three.js canvas
-│   │   ├── AtelierCanvas.tsx                        # Resizable divided atelier Three.js canvas
-│   │   ├── AtelierDualScene.tsx                     # Independent dual-scene WebGL viewport
-│   │   ├── CoutureMannequin.tsx                     # Procedural luxury mannequin
+│   │   ├── HeroCanvas.tsx                           # Master hero Three.js canvas (Kids, Men, Women)
+│   │   ├── KidsMannequin.tsx                        # Anatomical child-proportioned haute couture dressform
+│   │   ├── KidsOccasionDress.tsx                    # 3D children's celebration organza dress with seed pearls
+│   │   ├── KidsFestiveJacket.tsx                    # 3D boys' tailored velvet bandhgala with zardozi collar
+│   │   ├── CoutureMannequin.tsx                     # Parisian adult woman mannequin
 │   │   ├── CoutureGown.tsx                          # Champagne organza gown with botanical embroidery
-│   │   ├── MensBlazerMannequin.tsx                  # Midnight navy bespoke double-breasted blazer
-│   │   └── studioLighting.ts                        # 5-point studio lighting & HDRI environment
+│   │   ├── AtelierDualScene.tsx                     # Dual-scene WebGL viewport (Kids, Men, Women)
+│   │   └── studioLighting.ts                        # Multi-point studio lighting & HDRI environment
 │   ├── data/
-│   │   ├── storeProducts.ts                         # Complete product catalog (Men & Women)
-│   │   ├── garments.ts                              # Extended garment dossiers & craft hours
-│   │   └── threadorBrand.ts                         # Brand foundations & curriculum
+│   │   └── storeProducts.ts                         # Complete product catalog (6 Kids, 4 Men, 4 Women)
 │   ├── services/
 │   │   └── cartService.ts                           # LocalStorage cart state manager & event bus
 │   ├── types/
-│   │   └── index.ts                                 # TypeScript domain interfaces
+│   │   └── index.ts                                 # TypeScript interfaces & domain types
 │   ├── styles/
-│   │   └── global.css                               # Luxury editorial typography & design tokens
+│   │   └── global.css                               # Luxury editorial typography & design system
 │   ├── App.tsx                                      # Root orchestrator & route coordinator
 │   └── main.tsx                                     # Application entrypoint
 ├── package.json                                     # Project metadata & dependencies
@@ -98,100 +101,60 @@ story-behind-what-we-wear/
 
 ---
 
-## 3. Key Interactive Features
+## 4. Curated Luxury Product Catalog (14 Items)
 
-### 3.1. 1080p Cinematic Scroll Reveal (`ScrollGarmentCinematic.tsx`)
-Seamlessly marries 1080p master films with interactive 3D WebGL rendering. Users can scrub forward and backward through 6 progressive craft phases:
-- **Phase 01: The Silhouette** — Master silhouette lines, balance, and shoulder pitch.
-- **Phase 02: Structural Bodice / Shoulders** — Internal horsehair canvas and spiral steel corsetry.
-- **Phase 03: Botanical Embroidery / Peak Lapels** — Micro metallic gold threadwork and AMF pick-stitching.
-- **Phase 04: Macro River Pearls / Horn Accents** — Hand-anchored freshwater pearls and carved horn buttons.
-- **Phase 05: Cascading Train / Functional Cuffs** — Horsehair braid hem and functional surgeon's cuffs.
-- **Phase 06: Complete Haute Creation** — Immediate links to customize in the 3D Atelier or purchase in the Store.
+### 4.1. Children's Luxury Collection (6 Items)
+1. **The Petit Fleur Heirloom Silk Organza Gown** (`THREADOR-K-001`) — ₹38,000 • 110 craft hours, 22,000 stitches.
+2. **The Little Prince Royal Velvet Bandhgala** (`THREADOR-K-002`) — ₹42,000 • 125 craft hours, 26,000 stitches.
+3. **The Ceremonial Tiered Silk Tulle Occasion Dress** (`THREADOR-K-003`) — ₹34,000 • 95 craft hours, 19,500 stitches.
+4. **The Junior Savile Double-Breasted Wool Blazer** (`THREADOR-K-004`) — ₹39,000 • 115 craft hours, 24,000 stitches.
+5. **The Banarasi Brocade Heirloom Anarkali & Capelet** (`THREADOR-K-005`) — ₹46,000 • 140 craft hours, 31,000 stitches.
+6. **The Heritage Handspun Matka Silk Kurta & Nehru Waistcoat** (`THREADOR-K-006`) — ₹32,000 • 85 craft hours, 18,000 stitches.
 
-### 3.2. Dedicated Men’s and Women’s Storefronts (`StoreCollectionPage.tsx`)
-- Instant tab toggling between **Men's Bespoke** and **Women's Haute Couture**.
-- Granular category filtering (Couture Gowns, Evening Dresses, Capes & Stoles, Tailored Blazers, Formal Suits, Bandhgala & Achkan).
-- Sorting by craft hours, price (Low to High, High to Low), and newest additions.
-- Hover quick-add directly to the shopping bag.
+### 4.2. Men's Tailoring (4 Items)
+1. **The Midnight Tailored Blazer** (`THREADOR-M-001`) — ₹48,000
+2. **The Heritage Silk Bandhgala** (`THREADOR-M-002`) — ₹56,000
+3. **The Architectural Greatcoat** (`THREADOR-M-003`) — ₹72,000
+4. **The Ceremonial Zardozi Achkan** (`THREADOR-M-004`) — ₹84,000
 
-### 3.3. Bespoke 3D Atelier Workspace (`AtelierWorkspace.tsx`)
-- Full interactive 3D WebGL viewport with 4 calibrated camera angles (Front, Lapel Detail, Side Profile, Back Vent/Train).
-- Live fabric swatches with real-time PBR material updates (Roughness, Sheen, Metalness, Transmission).
-- Lapel and silhouette configuration.
-- Personalized monogramming embroidery input.
-- Made-to-measure measurement inputs (Chest/Bust, Waist, Sleeve Length, Height).
-- Instant "Add Bespoke Creation to Bag".
-
-### 3.4. Shopping Bag Drawer & Checkout Quotation (`ShoppingBagDrawer.tsx`)
-- Slides smoothly over any active page.
-- Persistent client-side cart (`localStorage`) displaying garment image, SKU, selected size, chosen colorway, and bespoke tailoring notes.
-- Subtotal calculation in both Indian Rupees (₹) and US Dollars ($).
-- Bespoke Order & Consultation Quotation Modal with client details, fitting mode preference, and Razorpay/UPI/Wire payment stubs.
+### 4.3. Women's Haute Couture (4 Items)
+1. **The Champagne Atelier Gown** (`THREADOR-W-001`) — ₹64,000
+2. **The Tiered Fluted Peplum Gown** (`THREADOR-W-002`) — ₹58,000
+3. **The Botanical Zardozi Evening Dress** (`THREADOR-W-003`) — ₹68,000
+4. **The Banarasi Stage Cape** (`THREADOR-W-004`) — ₹42,000
 
 ---
 
-## 4. Technical Documentation
+## 5. Development & Verification
 
-Detailed architectural and engineering guides are available in the [`docs/`](./docs) directory:
-- [**Technical Architecture Guide**](./docs/ARCHITECTURE.md) — System design, state orchestration, routing, and component topology.
-- [**1080p Video Asset Pipeline**](./docs/VIDEO_ASSET_PIPELINE.md) — Video asset profiles, frame extraction, scrubbing sync, and low-bandwidth fallbacks.
-- [**3D Garment WebGL Pipeline**](./docs/3D_GARMENT_PIPELINE.md) — Three.js procedural geometry, PBR material shaders, and studio lighting rig.
-- [**E-Commerce & Customization Workflow**](./docs/ECOMMERCE_WORKFLOW.md) — Product schema, cart service event architecture, and bespoke checkout lifecycle.
-
----
-
-## 5. Development & Build Instructions
-
-### Prerequisites
-- Node.js 18.x or higher
-- npm 9.x or higher
-
-### Installation
 ```bash
-# Clone repository
-git clone https://github.com/Yaathrapalani/the-threador.git
-cd the-threador
-
 # Install dependencies
 npm install
-```
 
-### Local Development Server
-```bash
-# Start local development server on port 3000
+# Start development server on port 3000
 npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) in your modern browser (Chrome, Safari, Edge, Firefox).
 
-### Production Build & Typecheck
-```bash
-# Execute TypeScript compiler and Vite production bundling
+# Production build and TypeScript validation
 npm run build
 ```
-Generates production-optimized artifacts in the `dist/` directory.
-
-### Preview Production Build
-```bash
-npm run preview
-```
 
 ---
 
-## 6. Verification Status
+## 6. Acceptance & Quality Status
 
-| Component | Status | Notes |
+| Requirement | Implementation Status | Evidence |
 | :--- | :--- | :--- |
-| **TypeScript Build** | `PASSED` | 0 errors across 2,180 modules compiled |
-| **1080p Video Assets** | `VERIFIED` | 3 master MP4 files + 9 contact frames present & optimized |
-| **3D Three.js Viewports** | `VERIFIED` | OrbitControls, PBR materials, multi-point lighting responsive |
-| **Men / Women Storefronts**| `VERIFIED` | 8 curated luxury garments with filtering & sorting |
-| **3D Atelier Customizer** | `VERIFIED` | Fabric swatching, monogramming, camera presets operational |
-| **Shopping Bag & Checkout**| `VERIFIED` | LocalStorage persistence, custom event bus, quotation modal functional |
-| **Costume & School Enrolment**| `VERIFIED` | Lead capture workflows intact |
+| **Children's Primary Focus** | **Complete** | `/kids` storefront, hero child dressform, topbar priority |
+| **Independent Men & Women** | **Complete** | `/men` and `/women` fully developed with 3D viewports |
+| **Child-Proportioned 3D** | **Complete** | `KidsMannequin.tsx`, `KidsOccasionDress.tsx`, `KidsFestiveJacket.tsx` |
+| **Colour System Overhaul** | **Complete** | Porcelain, Warm Ivory, Soft Sand, Champagne, Dusty Rose, Powder Blue |
+| **Scroll Reveal (All 3)** | **Complete** | `ScrollGarmentCinematic.tsx` with dedicated Kids, Men, Women phases |
+| **3D Atelier Workspace** | **Complete** | `AtelierWorkspace.tsx` supporting child fabrics & growth sizing |
+| **Parent Guide & Safety** | **Complete** | Organic silk linings, growth seam buffers, parent-facing checkout |
+| **TypeScript / Vite Build** | **Passed** | 0 errors across 2,182 compiled modules |
+| **Browser Visual QA** | **Verified** | Tested live via Chrome DevTools, 0 console errors |
 
 ---
 
-## 7. License & Provenance
 © 2026 THE THREADOR. All rights reserved.  
 Haute Couture 3D Experience, Fashion Education & Costume Atelier Rooted in India.

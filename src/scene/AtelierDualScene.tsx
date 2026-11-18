@@ -2,6 +2,8 @@ import { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { ContactShadows, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
+import { KidsMannequin } from './KidsMannequin';
+import { KidsOccasionDress } from './KidsOccasionDress';
 import type { AtelierGender } from '../types';
 
 interface AtelierCanvasProps {
@@ -11,9 +13,29 @@ interface AtelierCanvasProps {
 }
 
 // ---------------------------------------------------------------------------
+// 0. KIDS' HAUTE COUTURE RIG (PRIMARY COLLECTION)
+// ---------------------------------------------------------------------------
+function KidsCoutureRig({ isHovered }: { isHovered: boolean }) {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame((_, delta) => {
+    if (!groupRef.current) return;
+    const targetSpeed = isHovered ? 0.35 : 0.15;
+    groupRef.current.rotation.y += delta * targetSpeed;
+  });
+
+  return (
+    <group ref={groupRef} position={[0, -0.6, 0]}>
+      <KidsMannequin finish="porcelain-linen" />
+      <KidsOccasionDress />
+    </group>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // 1. MEN'S PRODUCTION RIG & PROCEDURAL FALLBACK
 // ---------------------------------------------------------------------------
-function ProceduralMensBlazer() {
+export function ProceduralMensBlazer() {
   const group = useMemo(() => {
     const grp = new THREE.Group();
 
@@ -208,17 +230,18 @@ function WomensCoutureRig({ isHovered }: { isHovered: boolean }) {
 // ---------------------------------------------------------------------------
 export function AtelierDualScene({ gender, isHovered, onExplore }: AtelierCanvasProps) {
   const isMen = gender === 'men';
+  const isKids = gender === 'kids';
 
   return (
     <div
-      className={`atelier-viewport-wrapper ${isMen ? 'men-viewport' : 'women-viewport'}`}
+      className={`atelier-viewport-wrapper ${isKids ? 'kids-viewport' : isMen ? 'men-viewport' : 'women-viewport'}`}
       onClick={() => onExplore(gender)}
       role="region"
-      aria-label={`${isMen ? "Men's Structured Atelier" : "Women's Couture Atelier"} 3D Viewport`}
+      aria-label={`${isKids ? "Children's Haute Couture" : isMen ? "Men's Structured Atelier" : "Women's Couture Atelier"} 3D Viewport`}
     >
       <Canvas
         camera={{
-          position: isMen ? [0, 0.22, 4.0] : [0, 0.22, 4.2],
+          position: isKids ? [0, 0.15, 3.8] : isMen ? [0, 0.22, 4.0] : [0, 0.22, 4.2],
           fov: 33,
           near: 0.1,
           far: 25
@@ -229,16 +252,31 @@ export function AtelierDualScene({ gender, isHovered, onExplore }: AtelierCanvas
           powerPreference: 'high-performance',
           alpha: true,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: isMen ? 1.25 : 1.15
+          toneMappingExposure: isKids ? 1.20 : isMen ? 1.25 : 1.15
         }}
         shadows={{ type: THREE.PCFSoftShadowMap }}
       >
-        {/* Independent Studio Lighting per Gender Universe */}
-        {isMen ? (
+        {/* Independent Studio Lighting per Collection Universe */}
+        {isKids ? (
+          // Kids' Lighting: Warm, luminous, soft champagne and delicate powder tones
+          <>
+            <ambientLight intensity={0.92} color="#fbf7f2" />
+            <directionalLight
+              position={[2.5, 3.8, 3.5]}
+              intensity={4.4}
+              color="#fff9f0"
+              castShadow
+              shadow-mapSize={[1024, 1024]}
+              shadow-bias={-0.0001}
+            />
+            <directionalLight position={[-2.8, 2.6, 2.8]} intensity={2.4} color="#e5eef7" />
+            <directionalLight position={[0, 3.5, -3.0]} intensity={3.6} color="#e8d9a8" />
+            <pointLight position={[0, -0.6, 1.6]} intensity={1.1} color="#fceeed" />
+          </>
+        ) : isMen ? (
           // Men's Lighting: Radiant Studio Illumination with Brilliant Contrast
           <>
             <ambientLight intensity={0.95} color="#e8f0fc" />
-            {/* Front Crisp Key Light directly illuminating the navy wool, satin lapel, and shirt */}
             <directionalLight
               position={[2.2, 4.2, 3.8]}
               intensity={4.8}
@@ -247,18 +285,14 @@ export function AtelierDualScene({ gender, isHovered, onExplore }: AtelierCanvas
               shadow-mapSize={[1024, 1024]}
               shadow-bias={-0.0001}
             />
-            {/* Soft Fill Light from left preventing deep shadows */}
             <directionalLight position={[-3.2, 2.8, 3.0]} intensity={2.6} color="#c8daf2" />
-            {/* Radiant Gold Rim Light outlining roped shoulders and waist */}
             <directionalLight position={[0, 3.8, -3.2]} intensity={4.2} color="#f2cf88" />
-            {/* Subtle under-bounce light */}
             <pointLight position={[0, -1.0, 1.8]} intensity={1.4} color="#dce6f5" />
           </>
         ) : (
           // Women's Lighting: Warm Champagne Luminescence & Soft Gold Fill
           <>
             <ambientLight intensity={0.88} color="#faf5ee" />
-            {/* Warm ivory key light from right */}
             <directionalLight
               position={[2.8, 4.2, 3.6]}
               intensity={4.2}
@@ -267,15 +301,15 @@ export function AtelierDualScene({ gender, isHovered, onExplore }: AtelierCanvas
               shadow-mapSize={[1024, 1024]}
               shadow-bias={-0.0001}
             />
-            {/* Soft antique gold rim light */}
             <directionalLight position={[-3.0, 3.2, -3.0]} intensity={3.4} color="#eec882" />
-            {/* Warm organza under-glow */}
             <pointLight position={[0, -0.8, 1.8]} intensity={1.2} color="#ffe8c4" />
           </>
         )}
 
         {/* 3D Garment Rig */}
-        {isMen ? (
+        {isKids ? (
+          <KidsCoutureRig isHovered={isHovered} />
+        ) : isMen ? (
           <MensTailoredRig isHovered={isHovered} />
         ) : (
           <WomensCoutureRig isHovered={isHovered} />
@@ -284,7 +318,7 @@ export function AtelierDualScene({ gender, isHovered, onExplore }: AtelierCanvas
         {/* Floor Contact Shadows */}
         <ContactShadows
           position={[0, -1.95, 0]}
-          opacity={isMen ? 0.75 : 0.55}
+          opacity={isKids ? 0.48 : isMen ? 0.75 : 0.55}
           scale={3.6}
           blur={2.0}
           far={3.0}

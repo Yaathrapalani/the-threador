@@ -34,6 +34,7 @@ export function ProductDetailPage({
   const product: ProductRecord =
     STORE_PRODUCTS.find((p) => p.id === productId) || STORE_PRODUCTS[0];
 
+  const isKids = product.gender === 'kids';
   const isMen = product.gender === 'men';
   const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] || 'Standard');
   const [selectedColor, setSelectedColor] = useState<string>(product.colors[0]?.name || 'Standard');
@@ -64,25 +65,27 @@ export function ProductDetailPage({
 
   const handleWhatsAppInquiry = () => {
     const text = encodeURIComponent(
-      `Hello The Threador Atelier, I am interested in inquiring about ${product.name} (${product.id}) in ${selectedColor}, size ${selectedSize}. Please provide guidance on lead time and sizing.`
+      `Hello The Threador Atelier, I am interested in inquiring about ${product.name} (${product.id}) in ${selectedColor}, size ${selectedSize}. Please provide guidance on lead time and bespoke fit.`
     );
     window.open(`https://wa.me/919876543210?text=${text}`, '_blank');
   };
 
   return (
-    <div className={`product-detail-page ${isMen ? 'men-product' : 'women-product'}`}>
+    <div className={`product-detail-page ${isKids ? 'kids-product' : isMen ? 'men-product' : 'women-product'}`}>
       {/* 1. TOP BREADCRUMBS & NAVIGATION */}
       <nav className="product-breadcrumb-bar" aria-label="Breadcrumb">
         <button type="button" className="breadcrumb-back-btn" onClick={onBackToCollection}>
           <ArrowLeft size={13} />
-          <span>BACK TO {isMen ? 'MEN’S' : 'WOMEN’S'} COLLECTION</span>
+          <span>
+            BACK TO {isKids ? 'CHILDREN’S' : isMen ? 'MEN’S' : 'WOMEN’S'} COLLECTION
+          </span>
         </button>
 
         <div className="breadcrumb-trail">
           <span onClick={() => onNavigatePage('home')}>HOME</span>
           <span className="sep">/</span>
-          <span onClick={() => onNavigatePage(isMen ? 'men' : 'women')}>
-            {isMen ? 'MEN' : 'WOMEN'}
+          <span onClick={() => onNavigatePage(isKids ? 'kids' : isMen ? 'men' : 'women')}>
+            {isKids ? 'KIDS' : isMen ? 'MEN' : 'WOMEN'}
           </span>
           <span className="sep">/</span>
           <span className="current">{product.name}</span>
@@ -142,7 +145,15 @@ export function ProductDetailPage({
 
             {activeMediaMode === '3d-canvas' && (
               <div className="product-three-canvas-wrap">
-                {isMen ? (
+                {isKids ? (
+                  <HeroCanvas
+                    gender="kids"
+                    scrollProgress={0.45}
+                    xrayMode="finished"
+                    forcedView={null}
+                    isTurntableActive={true}
+                  />
+                ) : isMen ? (
                   <AtelierDualScene
                     gender="men"
                     isHovered={true}
@@ -150,6 +161,7 @@ export function ProductDetailPage({
                   />
                 ) : (
                   <HeroCanvas
+                    gender="women"
                     scrollProgress={0.45}
                     xrayMode="finished"
                     forcedView={null}
@@ -345,6 +357,22 @@ export function ProductDetailPage({
             </ul>
           </div>
 
+          {/* Parent Sizing & Child Comfort Guide (for Kids Collection) */}
+          {product.parentGuide && (
+            <div className="parent-comfort-guide-box">
+              <div className="parent-guide-header">
+                <Sparkles size={13} className="parent-guide-icon" />
+                <span>PARENT SIZING & CHILD COMFORT GUIDE</span>
+              </div>
+              <p className="parent-guide-text">{product.parentGuide}</p>
+              {product.growAllowance && (
+                <div className="parent-guide-feature">
+                  <strong>GROWTH ALLOWANCE:</strong> {product.growAllowance}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Garment Construction Details Accordion */}
           <div className="construction-breakdown-box">
             <h3 className="breakdown-title">CONSTRUCTION & TAILORING DETAILS</h3>
@@ -359,3 +387,4 @@ export function ProductDetailPage({
     </div>
   );
 }
+

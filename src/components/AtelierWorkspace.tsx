@@ -30,6 +30,40 @@ interface FabricOption {
 }
 
 const ATELIER_FABRICS: Record<AtelierGender, FabricOption[]> = {
+  kids: [
+    {
+      id: 'kids-organza',
+      name: 'French Silk Organza (Hypoallergenic)',
+      composition: '85% French Silk, 15% Organic Habotai',
+      weight: '120 g/m²',
+      origin: 'Woven in Lyon, France',
+      pbrTexture: 'Translucent Soft Petal Sheen (0.68)'
+    },
+    {
+      id: 'kids-velvet',
+      name: 'Pure English Cotton Velvet (Non-Rigid)',
+      composition: '100% Breathable English Cotton',
+      weight: '310 g/m²',
+      origin: 'Lancashire, England',
+      pbrTexture: 'Plush Natural Pile & Soft Reflection'
+    },
+    {
+      id: 'kids-tulle',
+      name: 'Gossamer French Silk Tulle',
+      composition: '70% Silk Tulle, 30% Bamboo-Silk',
+      weight: '95 g/m²',
+      origin: 'Lake Como, Italy',
+      pbrTexture: 'Weightless Air Mesh Fluting'
+    },
+    {
+      id: 'kids-banarasi',
+      name: 'Varanasi Handloom Kadhwa Zari Brocade',
+      composition: '80% Katan Silk, 20% Fine Metallic Zari',
+      weight: '210 g/m²',
+      origin: 'Varanasi Heritage Pit-Looms',
+      pbrTexture: 'Handloom Floral Zari Couching'
+    }
+  ],
   women: [
     {
       id: 'mulberry-organza',
@@ -101,6 +135,14 @@ const ATELIER_FABRICS: Record<AtelierGender, FabricOption[]> = {
 };
 
 const COLORWAYS: Record<AtelierGender, { name: string; hex: string }[]> = {
+  kids: [
+    { name: 'Warm Ivory', hex: '#EEE7DC' },
+    { name: 'Dusty Rose', hex: '#D5B8B0' },
+    { name: 'Powder Blue', hex: '#B9C9D5' },
+    { name: 'Soft Butter', hex: '#E8D9A8' },
+    { name: 'Forest Sage', hex: '#A8AE98' },
+    { name: 'Royal Midnight', hex: '#131C2B' }
+  ],
   women: [
     { name: 'Warm Champagne Ivory', hex: '#fbf6ea' },
     { name: 'Oyster Nacre', hex: '#ede6d8' },
@@ -120,22 +162,25 @@ export function AtelierWorkspace({
   onOpenCart,
   onOpenProductDetail
 }: AtelierWorkspaceProps) {
-  const [gender, setGender] = useState<AtelierGender>('women');
-  const [selectedFabricId, setSelectedFabricId] = useState<string>('mulberry-organza');
-  const [selectedColor, setSelectedColor] = useState<string>('Warm Champagne Ivory');
-  const [selectedLapel, setSelectedLapel] = useState<string>('Sweetheart Sculptural Flute');
-  const [selectedButton, setSelectedButton] = useState<string>('Freshwater River Pearls');
+  const [gender, setGender] = useState<AtelierGender>('kids');
+  const [selectedFabricId, setSelectedFabricId] = useState<string>('kids-organza');
+  const [selectedColor, setSelectedColor] = useState<string>('Warm Ivory');
+  const [selectedLapel, setSelectedLapel] = useState<string>('Scalloped Peter Pan Collar');
+  const [selectedButton, setSelectedButton] = useState<string>('Freshwater Seed Pearls');
   const [activeCameraView, setActiveCameraView] = useState<GarmentCameraView>('front');
   const [monogram, setMonogram] = useState<string>('');
   const [isMadeToMeasure, setIsMadeToMeasure] = useState<boolean>(false);
+  const [childAge, setChildAge] = useState<string>('6–7Y');
   const [measurements, setMeasurements] = useState({
-    chest: '38',
-    waist: '30',
-    hips: '40',
-    height: '175'
+    chest: '24',
+    waist: '22',
+    hips: '26',
+    height: '122',
+    shoulderToHem: '28'
   });
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
+  const isKids = gender === 'kids';
   const isMen = gender === 'men';
   const fabrics = ATELIER_FABRICS[gender];
   const colors = COLORWAYS[gender];
@@ -146,7 +191,12 @@ export function AtelierWorkspace({
 
   const handleSwitchGender = (newGender: AtelierGender) => {
     setGender(newGender);
-    if (newGender === 'men') {
+    if (newGender === 'kids') {
+      setSelectedFabricId('kids-organza');
+      setSelectedColor('Warm Ivory');
+      setSelectedLapel('Scalloped Peter Pan Collar');
+      setSelectedButton('Freshwater Seed Pearls');
+    } else if (newGender === 'men') {
       setSelectedFabricId('merino-150');
       setSelectedColor('Midnight Navy');
       setSelectedLapel('Silk Satin Peak Lapel');
@@ -160,17 +210,25 @@ export function AtelierWorkspace({
   };
 
   const handleAddToBag = () => {
-    const customNotes = `Bespoke Configuration: ${currentFabric.name} in ${selectedColor}. Lapel/Style: ${selectedLapel}. Buttons: ${selectedButton}. ${
-      monogram ? `Monogram: ${monogram}. ` : ''
-    }${
-      isMadeToMeasure
-        ? `Made-to-Measure (Chest: ${measurements.chest}", Waist: ${measurements.waist}", Hips: ${measurements.hips}", Height: ${measurements.height}cm)`
-        : 'Standard Size'
-    }`;
+    const customNotes = isKids
+      ? `Bespoke Child Creation: ${currentFabric.name} in ${selectedColor}. Silhouette: ${selectedLapel}. Accents: ${selectedButton}. ${
+          monogram ? `Child Monogram: ${monogram}. ` : ''
+        }${
+          isMadeToMeasure
+            ? `Bespoke Child Fit (Age: ${childAge}, Height: ${measurements.height}cm, Chest: ${measurements.chest}", Waist: ${measurements.waist}", Hem: ${measurements.shoulderToHem}") [2.5" Growth Allowance Included]`
+            : `Standard Age Fit (${childAge})`
+        }`
+      : `Bespoke Adult Configuration: ${currentFabric.name} in ${selectedColor}. Lapel/Style: ${selectedLapel}. Buttons: ${selectedButton}. ${
+          monogram ? `Monogram: ${monogram}. ` : ''
+        }${
+          isMadeToMeasure
+            ? `Made-to-Measure (Chest: ${measurements.chest}", Waist: ${measurements.waist}", Hips: ${measurements.hips}", Height: ${measurements.height}cm)`
+            : 'Standard Size'
+        }`;
 
     cartService.addItem(
       targetProduct,
-      isMadeToMeasure ? 'Made-to-Measure' : targetProduct.sizes[0] || 'Standard',
+      isMadeToMeasure ? 'Made-to-Measure Bespoke' : targetProduct.sizes[0] || 'Standard',
       selectedColor,
       currentFabric.name,
       customNotes,
@@ -185,7 +243,7 @@ export function AtelierWorkspace({
   };
 
   return (
-    <div className={`atelier-workspace-root ${isMen ? 'men-workspace' : 'women-workspace'}`}>
+    <div className={`atelier-workspace-root ${isKids ? 'kids-workspace' : isMen ? 'men-workspace' : 'women-workspace'}`}>
       {/* 1. TOP ATELIER WORKSPACE STATUS BAR */}
       <header className="atelier-status-bar">
         <div className="status-brand-group">
@@ -197,11 +255,11 @@ export function AtelierWorkspace({
         <div className="status-gender-switch">
           <button
             type="button"
-            className={`gender-tab ${!isMen ? 'active' : ''}`}
-            onClick={() => handleSwitchGender('women')}
+            className={`gender-tab ${isKids ? 'active' : ''}`}
+            onClick={() => handleSwitchGender('kids')}
           >
             <Sparkles size={11} />
-            <span>WOMEN’S COUTURE</span>
+            <span>01 / KIDS COUTURE (FEATURED)</span>
           </button>
           <button
             type="button"
@@ -209,7 +267,15 @@ export function AtelierWorkspace({
             onClick={() => handleSwitchGender('men')}
           >
             <Scissors size={11} />
-            <span>MEN’S TAILORING</span>
+            <span>02 / MEN’S TAILORING</span>
+          </button>
+          <button
+            type="button"
+            className={`gender-tab ${!isKids && !isMen ? 'active' : ''}`}
+            onClick={() => handleSwitchGender('women')}
+          >
+            <Sparkles size={11} />
+            <span>03 / WOMEN’S COUTURE</span>
           </button>
         </div>
 
@@ -217,7 +283,7 @@ export function AtelierWorkspace({
           <button
             type="button"
             className="status-collection-btn"
-            onClick={() => onNavigatePage(isMen ? 'men' : 'women')}
+            onClick={() => onNavigatePage(isKids ? 'kids' : isMen ? 'men' : 'women')}
           >
             <span>STORE ARCHIVE</span>
           </button>
@@ -229,7 +295,15 @@ export function AtelierWorkspace({
         {/* LEFT PANE: 3D INTERACTIVE VIEWPORT */}
         <div className="workbench-viewport-pane">
           <div className="viewport-canvas-container">
-            {isMen ? (
+            {isKids ? (
+              <HeroCanvas
+                gender="kids"
+                scrollProgress={0.45}
+                xrayMode="finished"
+                forcedView={activeCameraView}
+                isTurntableActive={true}
+              />
+            ) : isMen ? (
               <AtelierDualScene
                 gender="men"
                 isHovered={true}
@@ -237,6 +311,7 @@ export function AtelierWorkspace({
               />
             ) : (
               <HeroCanvas
+                gender="women"
                 scrollProgress={0.45}
                 xrayMode="finished"
                 forcedView={activeCameraView}
@@ -279,7 +354,11 @@ export function AtelierWorkspace({
         <div className="workbench-controls-pane">
           <div className="controls-header">
             <span className="controls-taxonomy">
-              {isMen ? '01 / BESPOKE BESPOKE ARCHITECTURE' : '02 / HAUTE COUTURE SPECIFICATION'}
+              {isKids
+                ? '01 / CHILDREN’S HAUTE COUTURE SPECIFICATION'
+                : isMen
+                ? '02 / BESPOKE BESPOKE ARCHITECTURE'
+                : '03 / HAUTE COUTURE SPECIFICATION'}
             </span>
             <h2 className="controls-title">{targetProduct.name}</h2>
             <p className="controls-desc">{targetProduct.description}</p>
@@ -333,10 +412,12 @@ export function AtelierWorkspace({
           {/* CONTROL SECTION 3: LAPEL / SILHOUETTE VARIANT */}
           <div className="control-section">
             <span className="section-label">
-              3. {isMen ? 'LAPEL ARCHITECTURE:' : 'SILHOUETTE / BODICE FORM:'}
+              3. {isKids ? 'COLLAR & SILHOUETTE FORM:' : isMen ? 'LAPEL ARCHITECTURE:' : 'SILHOUETTE / BODICE FORM:'}
             </span>
             <div className="variant-options-row">
-              {(isMen
+              {(isKids
+                ? ['Scalloped Peter Pan Collar', 'Contoured Mandarin Stand', 'Ruffled Empire Bodice', 'Classic British Lapel']
+                : isMen
                 ? ['Silk Satin Peak Lapel', 'Notch Wool Lapel', 'Shawl Ceremonial Collar']
                 : ['Sweetheart Sculptural Flute', 'Architectural Column', 'Plunging V-Neckline']
               ).map((style) => (
@@ -356,7 +437,9 @@ export function AtelierWorkspace({
           <div className="control-section">
             <span className="section-label">4. BUTTONS & EMBELLISHMENTS:</span>
             <div className="variant-options-row">
-              {(isMen
+              {(isKids
+                ? ['Freshwater Seed Pearls', 'Natural Mother-of-Pearl', 'Faceted Brass Crests', 'Silk Covered Buttons']
+                : isMen
                 ? ['Polished Brass Crest', 'Carved Natural Horn', 'Concealed Silk Placket']
                 : ['Freshwater River Pearls', 'Micro-Wire Gold Zardozi', 'Concealed Silk Loop']
               ).map((btn) => (
@@ -386,49 +469,104 @@ export function AtelierWorkspace({
             </div>
 
             {isMadeToMeasure && (
-              <div className="measurements-input-grid">
-                <div className="measure-field">
-                  <label>Chest / Bust (Inches)</label>
-                  <input
-                    type="text"
-                    value={measurements.chest}
-                    onChange={(e) => setMeasurements({ ...measurements, chest: e.target.value })}
-                  />
+              isKids ? (
+                <div className="measurements-input-grid kids-measure-grid">
+                  <div className="measure-field">
+                    <label>Age Bracket</label>
+                    <select
+                      value={childAge}
+                      onChange={(e) => setChildAge(e.target.value)}
+                      className="child-age-select"
+                    >
+                      {['2–3Y', '4–5Y', '6–7Y', '8–9Y', '10–12Y', '13–14Y'].map((a) => (
+                        <option key={a} value={a}>{a}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="measure-field">
+                    <label>Child Height (cm)</label>
+                    <input
+                      type="text"
+                      value={measurements.height}
+                      onChange={(e) => setMeasurements({ ...measurements, height: e.target.value })}
+                    />
+                  </div>
+                  <div className="measure-field">
+                    <label>Chest / Bust (Inches)</label>
+                    <input
+                      type="text"
+                      value={measurements.chest}
+                      onChange={(e) => setMeasurements({ ...measurements, chest: e.target.value })}
+                    />
+                  </div>
+                  <div className="measure-field">
+                    <label>Natural Waist (Inches)</label>
+                    <input
+                      type="text"
+                      value={measurements.waist}
+                      onChange={(e) => setMeasurements({ ...measurements, waist: e.target.value })}
+                    />
+                  </div>
+                  <div className="measure-field">
+                    <label>Shoulder to Hem (Inches)</label>
+                    <input
+                      type="text"
+                      value={measurements.shoulderToHem}
+                      onChange={(e) => setMeasurements({ ...measurements, shoulderToHem: e.target.value })}
+                    />
+                  </div>
+                  <div className="kids-growth-notice">
+                    <ShieldCheck size={12} />
+                    <span>Includes 2.5-inch concealed French seam allowance for natural growth.</span>
+                  </div>
                 </div>
-                <div className="measure-field">
-                  <label>Natural Waist (Inches)</label>
-                  <input
-                    type="text"
-                    value={measurements.waist}
-                    onChange={(e) => setMeasurements({ ...measurements, waist: e.target.value })}
-                  />
+              ) : (
+                <div className="measurements-input-grid">
+                  <div className="measure-field">
+                    <label>Chest / Bust (Inches)</label>
+                    <input
+                      type="text"
+                      value={measurements.chest}
+                      onChange={(e) => setMeasurements({ ...measurements, chest: e.target.value })}
+                    />
+                  </div>
+                  <div className="measure-field">
+                    <label>Natural Waist (Inches)</label>
+                    <input
+                      type="text"
+                      value={measurements.waist}
+                      onChange={(e) => setMeasurements({ ...measurements, waist: e.target.value })}
+                    />
+                  </div>
+                  <div className="measure-field">
+                    <label>Hips (Inches)</label>
+                    <input
+                      type="text"
+                      value={measurements.hips}
+                      onChange={(e) => setMeasurements({ ...measurements, hips: e.target.value })}
+                    />
+                  </div>
+                  <div className="measure-field">
+                    <label>Total Height (cm)</label>
+                    <input
+                      type="text"
+                      value={measurements.height}
+                      onChange={(e) => setMeasurements({ ...measurements, height: e.target.value })}
+                    />
+                  </div>
                 </div>
-                <div className="measure-field">
-                  <label>Hips (Inches)</label>
-                  <input
-                    type="text"
-                    value={measurements.hips}
-                    onChange={(e) => setMeasurements({ ...measurements, hips: e.target.value })}
-                  />
-                </div>
-                <div className="measure-field">
-                  <label>Total Height (cm)</label>
-                  <input
-                    type="text"
-                    value={measurements.height}
-                    onChange={(e) => setMeasurements({ ...measurements, height: e.target.value })}
-                  />
-                </div>
-              </div>
+              )
             )}
           </div>
 
           {/* CONTROL SECTION 6: CUSTOM MONOGRAMMING */}
           <div className="control-section">
-            <span className="section-label">6. INTERNAL SILK MONOGRAM (OPTIONAL):</span>
+            <span className="section-label">
+              6. {isKids ? 'CHILD SASH MONOGRAM (INITIALS / DATE):' : 'INTERNAL SILK MONOGRAM (OPTIONAL):'}
+            </span>
             <input
               type="text"
-              placeholder="e.g. A.S. • 2026"
+              placeholder={isKids ? 'e.g. A.P. • 2026' : 'e.g. A.S. • 2026'}
               maxLength={16}
               value={monogram}
               onChange={(e) => setMonogram(e.target.value)}

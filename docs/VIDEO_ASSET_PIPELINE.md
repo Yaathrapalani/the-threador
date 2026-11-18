@@ -73,3 +73,4 @@ Visitors can switch seamlessly between two visual rendering modes:
 - **3D Mode (Interactive WebGL Canvas)**: Mounts a Three.js canvas with OrbitControls allowing unrestricted 360° inspection, zoom into micro-textures, and live lighting adjustments.
 
 Both modes share the identical craft HUD status overlay, phase selector, and immediate links to the bespoke tailoring atelier.
+

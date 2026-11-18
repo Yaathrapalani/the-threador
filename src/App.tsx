@@ -200,7 +200,7 @@ export default function App() {
 
             {/* SECTION 02: SIGNATURE SCROLL-DRIVEN 1080P GARMENT REVEAL */}
             <ScrollGarmentCinematic
-              initialGender="women"
+              initialGender="kids"
               onNavigatePage={handleNavigatePage}
               onOpenProductDetail={handleOpenProductDetail}
             />
@@ -229,7 +229,19 @@ export default function App() {
         )}
 
         {/* =========================================================
-            PAGE 02: MEN'S DEDICATED STORE COLLECTION
+            PAGE 02: KIDS' DEDICATED STORE COLLECTION (PRIMARY)
+        ========================================================= */}
+        {activePage === 'kids' && (
+          <StoreCollectionPage
+            gender="kids"
+            onSelectProduct={handleOpenProductDetail}
+            onNavigatePage={handleNavigatePage}
+            onOpenCart={() => setIsCartOpen(true)}
+          />
+        )}
+
+        {/* =========================================================
+            PAGE 03: MEN'S DEDICATED STORE COLLECTION
         ========================================================= */}
         {activePage === 'men' && (
           <StoreCollectionPage
@@ -241,7 +253,7 @@ export default function App() {
         )}
 
         {/* =========================================================
-            PAGE 03: WOMEN'S DEDICATED STORE COLLECTION
+            PAGE 04: WOMEN'S DEDICATED STORE COLLECTION
         ========================================================= */}
         {activePage === 'women' && (
           <StoreCollectionPage
@@ -263,14 +275,22 @@ export default function App() {
         )}
 
         {/* =========================================================
-            PAGE 05: PRODUCT DETAIL VIEW
+            PAGE 06: PRODUCT DETAIL VIEW
         ========================================================= */}
         {activePage === 'product-detail' && (
           <ProductDetailPage
             productId={selectedProductId}
             onNavigatePage={handleNavigatePage}
             onOpenCart={() => setIsCartOpen(true)}
-            onBackToCollection={() => setActivePage(selectedProductId.includes('-M-') ? 'men' : 'women')}
+            onBackToCollection={() =>
+              setActivePage(
+                selectedProductId.includes('-K-')
+                  ? 'kids'
+                  : selectedProductId.includes('-M-')
+                  ? 'men'
+                  : 'women'
+              )
+            }
           />
         )}
 

@@ -5,19 +5,50 @@
   --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'Space Mono', ui-monospace, Menlo, Consolas, monospace;
 
-  /* THE THREADOR BRAND PALETTE */
-  --color-midnight: #102440;
-  --color-ink: #10131B;
-  --color-canvas: #F4F1E8;
-  --color-canvas-light: #FAF8F2;
-  --color-mustard: #C7A64A;
+  /* THE THREADOR MASTER LUXURY DESIGN SYSTEM */
+  /* Primary Foundation Tokens */
+  --color-porcelain: #F7F4EF;        /* Primary background */
+  --color-warm-ivory: #EEE7DC;       /* Secondary backgrounds */
+  --color-soft-sand: #D8C9B5;        /* Supporting surfaces & borders */
+  --color-champagne: #C7AA83;        /* Restrained luxury accent */
+  --color-deep-cocoa: #493B32;       /* Warm text accent */
+  --color-ink-charcoal: #242321;     /* Primary typography */
+  --color-muted-sage: #A8AE98;       /* Restrained secondary accent */
+  --color-dusty-rose: #D5B8B0;       /* Children's couture accent */
+  --color-powder-blue: #B9C9D5;      /* Children's couture accent */
+  --color-soft-butter: #E8D9A8;      /* Children's couture accent */
+
+  /* Collection-Specific Themes */
+  --color-kids-accent: #D5B8B0;
+  --color-kids-sky: #B9C9D5;
+  --color-kids-butter: #E8D9A8;
+  --color-kids-sage: #A8AE98;
+  --color-kids-bg: #F7F4EF;
+  --color-kids-surface: #EEE7DC;
+
+  --color-men-navy: #131C2B;
+  --color-men-charcoal: #242321;
+  --color-men-espresso: #362C24;
+  --color-men-olive: #5A6351;
+
+  --color-women-champagne: #C7AA83;
+  --color-women-wine: #4A202A;
+  --color-women-rose: #D5B8B0;
+  --color-women-taupe: #9E9389;
+
+  /* Backward Compatibility Semantic Tokens */
+  --color-midnight: #131C2B;
+  --color-ink: var(--color-ink-charcoal);
+  --color-canvas: var(--color-porcelain);
+  --color-canvas-light: var(--color-warm-ivory);
+  --color-mustard: var(--color-champagne);
   --color-mustard-hover: #b5943b;
-  --color-heritage-green: #47785D;
-  --color-stone: #D9D4C9;
+  --color-heritage-green: var(--color-muted-sage);
+  --color-stone: var(--color-soft-sand);
   --color-ink-muted: #5E5B54;
   --color-ink-faint: #8F8A7E;
-  --color-stone-border: rgba(16, 19, 27, 0.12);
-  --color-stone-border-light: rgba(244, 241, 232, 0.15);
+  --color-stone-border: rgba(36, 35, 33, 0.12);
+  --color-stone-border-light: rgba(247, 244, 239, 0.2);
 
   --z-canvas: 1;
   --z-grid: 2;
@@ -6449,6 +6480,189 @@ body {
   letter-spacing: 0.16em;
   font-weight: 700;
   cursor: pointer;
+}
+
+/* =========================================================================
+   LUXURY CHILDREN'S COUTURE & RE-CURATED DESIGN SYSTEM TOKENS
+========================================================================= */
+
+/* Primary Kids Navigation Distinction */
+.kids-primary-nav {
+  position: relative;
+  color: var(--color-ink-charcoal) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+}
+
+.kids-primary-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-champagne), var(--color-dusty-rose));
+  border-radius: 1px;
+}
+
+.kids-drawer-link {
+  font-weight: 700 !important;
+  color: var(--color-champagne) !important;
+}
+
+.kids-pathway-pill {
+  background: linear-gradient(135deg, rgba(213, 184, 176, 0.25), rgba(199, 170, 131, 0.3)) !important;
+  border-color: rgba(199, 170, 131, 0.45) !important;
+}
+
+/* Kids Age & Category Filters */
+.age-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.age-filter-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  color: #8c8275;
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.age-pill-btn {
+  padding: 5px 12px;
+  background: rgba(36, 35, 33, 0.05);
+  border: 1px solid rgba(36, 35, 33, 0.12);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  color: var(--color-ink-charcoal);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.age-pill-btn:hover {
+  background: rgba(36, 35, 33, 0.1);
+  border-color: var(--color-champagne);
+}
+
+.age-pill-btn.active {
+  background: var(--color-ink-charcoal);
+  color: #fff;
+  border-color: var(--color-ink-charcoal);
+}
+
+/* Product Card Age & Hypoallergenic Badges */
+.product-age-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.age-group-pill {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  background: rgba(199, 170, 131, 0.18);
+  border: 1px solid rgba(199, 170, 131, 0.35);
+  border-radius: 2px;
+  color: var(--color-deep-cocoa);
+  font-weight: 700;
+}
+
+.hypoallergenic-pill {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  background: rgba(168, 174, 152, 0.22);
+  border: 1px solid rgba(168, 174, 152, 0.4);
+  border-radius: 2px;
+  color: #444c38;
+  font-weight: 700;
+}
+
+/* Parent Sizing & Child Comfort Guide Callout in PDP */
+.parent-comfort-guide-box {
+  margin: 24px 0;
+  padding: 20px;
+  background: rgba(238, 231, 220, 0.4);
+  border: 1px solid rgba(199, 170, 131, 0.35);
+  border-radius: 4px;
+}
+
+.parent-guide-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--color-deep-cocoa);
+  margin-bottom: 10px;
+}
+
+.parent-guide-icon {
+  color: var(--color-champagne);
+}
+
+.parent-guide-text {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--color-deep-cocoa);
+  margin-bottom: 12px;
+}
+
+.parent-guide-feature {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  color: #242321;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 8px 12px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* Kids Bespoke Measurements Grid */
+.kids-measure-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.child-age-select {
+  width: 100%;
+  padding: 10px 12px;
+  background: #18191c;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 2px;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.kids-growth-notice {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(199, 170, 131, 0.12);
+  border: 1px solid rgba(199, 170, 131, 0.28);
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: #d6b88d;
 }
 
 @media (max-width: 900px) {
