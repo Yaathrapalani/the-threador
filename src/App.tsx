@@ -28,13 +28,50 @@ import type { AtelierGender, ModelAssetInfo, PageId } from './types';
 
 gsap.registerPlugin(ScrollTrigger);
 
+function parseRoute(pathname: string): { page: PageId; productId?: string } {
+  const clean = pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+  if (!clean || clean === 'home') return { page: 'home' };
+  if (clean === 'kids') return { page: 'kids' };
+  if (clean === 'men') return { page: 'men' };
+  if (clean === 'women') return { page: 'women' };
+  if (clean === 'collections') return { page: 'collections' };
+  if (clean === 'atelier') return { page: 'atelier' };
+  if (clean === 'annual-day' || clean === 'annualday') return { page: 'annual-day' };
+  if (clean === 'course' || clean === 'education') return { page: 'course' };
+  if (clean === 'gallery') return { page: 'gallery' };
+  if (clean === 'about' || clean === 'about-us') return { page: 'about' };
+  if (clean === 'contact') return { page: 'contact' };
+  if (clean.startsWith('product/')) {
+    const parts = pathname.split('/');
+    const rawId = parts[2] ? decodeURIComponent(parts[2]) : undefined;
+    return { page: 'product-detail', productId: rawId || 'THREADOR-W-001' };
+  }
+  return { page: 'home' };
+}
+
+function getPathForPage(page: PageId, productId?: string): string {
+  if (page === 'home') return '/';
+  if (page === 'product-detail') return `/product/${productId || 'THREADOR-W-001'}`;
+  return `/${page}`;
+}
+
 export default function App() {
   const rootRef = useRef<HTMLDivElement>(null);
   const heroTrackRef = useRef<HTMLDivElement>(null);
 
-  // Active page routing state
-  const [activePage, setActivePage] = useState<PageId>('home');
-  const [selectedProductId, setSelectedProductId] = useState<string>('THREADOR-W-001');
+  // Active page routing state synchronized with URL pathname
+  const [activePage, setActivePage] = useState<PageId>(() => {
+    if (typeof window !== 'undefined') {
+      return parseRoute(window.location.pathname).page;
+    }
+    return 'home';
+  });
+  const [selectedProductId, setSelectedProductId] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return parseRoute(window.location.pathname).productId || 'THREADOR-W-001';
+    }
+    return 'THREADOR-W-001';
+  });
 
   // Scroll and stage state for Home
   const [scrollProgress, setScrollProgress] = useState<number>(0);
@@ -75,24 +112,50 @@ export default function App() {
 
   const handleNavigatePage = useCallback((page: PageId) => {
     setActivePage(page);
+    const path = getPathForPage(page);
+    if (typeof window !== 'undefined' && window.location.pathname !== path) {
+      window.history.pushState({ page }, '', path);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   const handleOpenProductDetail = useCallback((productId: string) => {
     setSelectedProductId(productId);
     setActivePage('product-detail');
+    const path = getPathForPage('product-detail', productId);
+    if (typeof window !== 'undefined' && window.location.pathname !== path) {
+      window.history.pushState({ page: 'product-detail', productId }, '', path);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   const handleSelectCollection = useCallback((atelier: AtelierGender) => {
     setSelectedAtelierFilter(atelier);
-    setActivePage(atelier === 'men' ? 'men' : 'women');
+    const targetPage: PageId = atelier === 'men' ? 'men' : 'women';
+    setActivePage(targetPage);
+    const path = getPathForPage(targetPage);
+    if (typeof window !== 'undefined' && window.location.pathname !== path) {
+      window.history.pushState({ page: targetPage }, '', path);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // Listen for browser forward/back navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      const route = parseRoute(window.location.pathname);
+      setActivePage(route.page);
+      if (route.productId) {
+        setSelectedProductId(route.productId);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   const handleJumpToXRay = useCallback(() => {
     if (activePage !== 'home') {
-      setActivePage('home');
+      handleNavigatePage('home');
       setTimeout(() => {
         const xrayElem = document.getElementById('xray');
         if (xrayElem) xrayElem.scrollIntoView({ behavior: 'smooth' });
@@ -101,7 +164,7 @@ export default function App() {
       const xrayElem = document.getElementById('xray');
       if (xrayElem) xrayElem.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [activePage]);
+  }, [activePage, handleNavigatePage]);
 
   // Lenis smooth scroll and custom cursor
   useEffect(() => {
@@ -283,7 +346,7 @@ export default function App() {
             onNavigatePage={handleNavigatePage}
             onOpenCart={() => setIsCartOpen(true)}
             onBackToCollection={() =>
-              setActivePage(
+              handleNavigatePage(
                 selectedProductId.includes('-K-')
                   ? 'kids'
                   : selectedProductId.includes('-M-')
