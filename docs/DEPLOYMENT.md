@@ -83,3 +83,4 @@ VITE_ANALYTICS_ID=G-XXXXXXXXXX
   ```http
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://checkout.razorpay.com; connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; worker-src 'self' blob:;
   ```
+

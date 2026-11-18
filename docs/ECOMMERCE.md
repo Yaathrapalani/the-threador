@@ -86,3 +86,4 @@ To respect strict luxury commerce protocols and legal boundary controls:
           │   Razorpay / Instant UPI│ │ Wire Transfer / Invoice │
           └─────────────────────────┘ └─────────────────────────┘
 ```
+

@@ -15,6 +15,7 @@ import { GalleryPage } from './components/GalleryPage';
 import { ContactSection } from './components/ContactSection';
 import { CollectionSection } from './components/CollectionSection';
 import { StoreCollectionPage } from './components/StoreCollectionPage';
+import { KidsLittleUniverse } from './components/KidsLittleUniverse';
 import { ProductDetailPage } from './components/ProductDetailPage';
 import { AtelierWorkspace } from './components/AtelierWorkspace';
 import { ShoppingBagDrawer } from './components/ShoppingBagDrawer';
@@ -229,11 +230,10 @@ export default function App() {
         )}
 
         {/* =========================================================
-            PAGE 02: KIDS' DEDICATED STORE COLLECTION (PRIMARY)
+            PAGE 02: KIDS' PROJECT LITTLE UNIVERSE (PRINCIPAL COLLECTION)
         ========================================================= */}
         {activePage === 'kids' && (
-          <StoreCollectionPage
-            gender="kids"
+          <KidsLittleUniverse
             onSelectProduct={handleOpenProductDetail}
             onNavigatePage={handleNavigatePage}
             onOpenCart={() => setIsCartOpen(true)}

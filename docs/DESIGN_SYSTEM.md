@@ -1,5 +1,5 @@
 # THE THREADOR — DESIGN SYSTEM SPECIFICATION
-**Version:** 2.4.0 • Luxury Digital Flagship Edition  
+**Version:** 3.0.0 • Reference-Led Dark Couture & Technical Flagship Edition  
 **Repository:** `https://github.com/Yaathrapalani/the-threador`  
 **Stylesheet:** `src/styles/global.css`
 
@@ -12,103 +12,101 @@ All design tokens are standardized as CSS custom properties under `:root` in `sr
 ### 1.1 Color Tokens
 ```css
 :root {
-  /* Brand Luxury Neutral Foundation */
-  --color-porcelain: #F7F4EF;
-  --color-warm-ivory: #EEE7DC;
-  --color-soft-sand: #D8C9B5;
-  --color-champagne: #C7AA83;
-  --color-deep-cocoa: #493B32;
-  --color-ink-charcoal: #242321;
-  --color-soft-stone: #D5D0C8;
-  --color-muted-sage: #A8AE98;
+  /* Dark Couture Spatial Envelopes */
+  --color-obsidian: #08070C;
+  --color-midnight: #100C18;
+  --color-deep-aubergine: #21132C;
+  --color-surface-elevated: #17131D;
+  --color-surface-secondary: #201B27;
 
-  /* Heirloom Children's Luxury Accents */
-  --color-powder-blue: #B9C9D5;
-  --color-dusty-rose: #D5B8B0;
-  --color-soft-butter: #E8D9A8;
+  /* Fashion-Technology Accents */
+  --color-electric-violet: #7042A6;
+  --color-muted-lilac: #A68CBF;
+  --color-acid-lime: #B7E33B;
 
-  /* Semantic UI Tokens */
-  --bg-primary: var(--color-porcelain);
-  --bg-secondary: var(--color-warm-ivory);
-  --bg-elevated: #FFFFFF;
-  --text-primary: var(--color-deep-cocoa);
-  --text-secondary: rgba(73, 59, 50, 0.72);
-  --text-tertiary: rgba(73, 59, 50, 0.48);
-  --border-subtle: rgba(216, 201, 181, 0.45);
-  --border-strong: var(--color-champagne);
-  --accent-gold: var(--color-champagne);
+  /* Typography Contrast */
+  --color-text-primary: #F1EEF4;
+  --color-text-secondary: #B8B0C0;
+  --color-text-muted: #817989;
+
+  /* Hairline Borders */
+  --color-border-subtle: #302A38;
+  --color-border-strong: #494052;
+
+  /* Status Indicators */
+  --color-status-success: #A6CF68;
+  --color-status-warning: #D8AD62;
+  --color-status-error: #D77979;
+
+  /* Botanical Silk Accents (The Colour Garden) */
+  --color-powder-blue: #8EA8C3;
+  --color-soft-butter: #E8D595;
+  --color-dusty-rose: #C49A9B;
+  --color-gentle-lavender: #B5A0D0;
+  --color-muted-mint: #8FBCA4;
+  --color-soft-coral: #D48B80;
+  --color-warm-apricot: #DE9E7D;
+  --color-royal-plum: #4A284D;
+
+  /* Semantic UI Aliases */
+  --bg-primary: var(--color-obsidian);
+  --bg-secondary: var(--color-midnight);
+  --bg-elevated: var(--color-surface-elevated);
+  --text-primary: var(--color-text-primary);
+  --text-secondary: var(--color-text-secondary);
+  --text-tertiary: var(--color-text-muted);
+  --border-subtle: var(--color-border-subtle);
+  --border-strong: var(--color-border-strong);
+  --accent-gold: var(--color-acid-lime);
 }
 ```
 
-### 1.2 Elevation & Shadow Layers
+### 1.2 Technical Grid Background
 ```css
-  --shadow-subtle: 0 4px 20px rgba(36, 35, 33, 0.04);
-  --shadow-medium: 0 12px 36px rgba(36, 35, 33, 0.08);
-  --shadow-floating: 0 24px 64px rgba(36, 35, 33, 0.12);
-  --shadow-gold-glow: 0 8px 32px rgba(199, 170, 131, 0.24);
+.site-shell,
+.kids-universe-root,
+.hero-scroll-track,
+.atelier-laboratory-root {
+  background-color: var(--color-obsidian);
+  background-image: 
+    linear-gradient(rgba(112, 66, 166, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(112, 66, 166, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
 ```
 
-### 1.3 Radii & Geometry
-```css
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-full: 9999px;
-```
+### 1.3 Hairline Borders & Geometry
+- **Hairline Borders:** `1px solid var(--color-border-subtle)` (`#302A38`) for structural panels; `1px solid var(--color-border-strong)` (`#494052`) for interactive focus.
+- **Radii:** Restrained architectural radii (`--radius-xs: 2px;`, `--radius-sm: 3px;`, `--radius-md: 4px;`).
+- **Glassmorphism:** `backdrop-filter: blur(16px)` on dark surfaces (`rgba(16, 12, 24, 0.85)`).
 
 ---
 
 ## 2. Component Design Specifications
 
 ### 2.1 The Editorial Header (`Header.tsx`)
-- **State Transition:** Switches dynamically to `.topbar-compact` after 40px of scroll (`backdrop-filter: blur(20px)`, height drops from 80px to 64px).
-- **Navigation Cluster:**
-  - `KIDS COUTURE` (Highlighted with subtle champagne pill badge).
-  - `WOMEN'S HAUTE COUTURE`
-  - `MEN'S TAILORING`
-  - `3D ATELIER`
-  - `ANNUAL DAY ATELIER`
-  - `THE CURRICULUM`
-- **Right Utilities:** Currency indicator (`INR / USD`), Search, Shopping Bag drawer launcher with dynamic count badge.
+- Dark glass container (`rgba(8, 7, 12, 0.85)` with `backdrop-filter: blur(20px)` and hairline border).
+- Brand monogram with acid-lime sub-tagline `"DIGITAL COUTURE ATELIER"`.
+- Navigation pills with violet / acid-lime focus indicators.
 
-### 2.2 Signature 7-Phase Cinematic HUD (`ScrollGarmentCinematic.tsx`)
-- Floating frosted glass card (`rgba(247, 244, 239, 0.88)`, `backdrop-filter: blur(24px)`).
-- **Top Eyebrow:** Phase Letter (`PHASE A` to `PHASE G`) with active focal point indicator.
-- **Craft Metrics Bar:** Verified workshop hours, micro-stitch count, and internal seam allowance specifications.
-- **Dual Direct CTAs:** "Inspect Product Details" and "Customize in Atelier".
+### 2.2 3D Atelier Laboratory (`AtelierWorkspace.tsx`)
+- **Left Panel (Blueprint & Swatches):** CAD vector blueprint, category filter pills (`ALL`, `SILK`, `VELVET`, `WOOL`, `BROCADE`), and tactile fiber data cards.
+- **Center Viewport:** Real-time WebGL canvas with interactive HUD telemetry, 6 camera presets, 3 studio lighting modes, and expandable bottom toolbar.
+- **Right Panel (Technical Dossier):** Real-time pricing calculations, artisan handcraft metrics, sizing selectors, and one-click WhatsApp dossier transmission.
 
-### 2.3 Store Collection Grid (`StoreCollectionPage.tsx`)
-- **Age Bracket Filter:** Custom pills for `2–4Y`, `4–6Y`, `6–8Y`, `8–10Y`, and `10–14Y`.
-- **Garment Card Architecture:**
-  - High-resolution editorial garment photography with subtle hover zoom (`scale(1.03)`).
-  - Quick 3D preview trigger badge.
-  - Hypoallergenic silk indicator badge.
-  - Transparent craft hours tag (`85h–210h Workshop Handcraft`).
-  - Price display with instant add-to-bag integration.
-
-### 2.4 Parent Sizing & Comfort Guide Callout (`ProductDetailPage.tsx`)
-- High-visibility champagne-bordered alert box.
-- Explains:
-  - Hidden 2.5-inch internal seam allowances for child growth.
-  - 100% hypoallergenic organic mulberry silk lining.
-  - Scratch-free fabric-backed zippers and tagless necklines.
+### 2.3 Project Little Universe (`KidsLittleUniverse.tsx`)
+- Two-audience switcher (`THE LITTLE WORLD` vs `THE PARENT'S ATELIER`).
+- Occasion Explorer cards with emoji tokens and bespoke narratives.
+- Botanical Silk Colour Garden flower pills.
+- Fabric Observatory interactive tabs with breathability and sensory metrics.
+- Floating child wishlist bar and friendly WhatsApp sharing handoff.
+- Pediatric comfort banner highlighting 2.5" hidden French seams and hypoallergenic silk linings.
+- Age-segmented product grid (`2–4Y`, `4–6Y`, `6–8Y`, `8–10Y`, `10–14Y`).
 
 ---
 
 ## 3. Responsive Breakpoints
 
-| Breakpoint | Viewport Width | Layout Adaptations |
-| :--- | :--- | :--- |
-| **Mobile Portrait** | `< 640px` | Single-column stack, bottom-docked navigation, full-screen atelier drawer |
-| **Tablet Portrait** | `640px – 1024px` | 2-column product grid, compact split HUD, touch-optimized turntable sliders |
-| **Desktop Flagship** | `1024px – 1440px` | 3-column product grid, side-by-side atelier controls, synchronized video scrub |
-| **4K Ultra-Wide** | `> 1440px` | Centered max-width container (`1600px`), dual-column atelier canvas + inspector |
-
----
-
-## 4. Accessibility & Contrast Standards
-
-- **WCAG AA Compliance:** All text-to-background combinations exceed 4.5:1 contrast ratio (`#493B32` Deep Cocoa on `#F7F4EF` Porcelain provides an **8.9:1** contrast ratio).
-- **Motion Accessibility:** Honors `prefers-reduced-motion` media query by disabling auto-rotation and camera transitions.
-- **Keyboard Navigation:** All interactive elements feature visible focus rings styled in warm champagne (`outline: 2px solid var(--color-champagne)`).
+- **Mobile (< 768px):** Single-column stacked layouts, horizontal scrolling pill rows, bottom toolbar collapsibility.
+- **Tablet (768px – 1024px):** 2-column grids, compact sidebars.
+- **Desktop (>= 1024px):** 3-panel technical workbench layout, 3-column product showcase, multi-tier grid systems.
