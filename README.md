@@ -7,8 +7,8 @@
 [![Vite](https://img.shields.io/badge/Vite-7.3-646cff.svg)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38b2ac.svg)](https://tailwindcss.com/)
 
-> **"What if every child grew up knowing the story behind what they wear?"**  
-> *The land. The material. The maker. The culture. The industry.*
+> **"Clothing, considered."**  
+> *The story behind what we wear: The land. The material. The maker. The culture. The industry.*
 
 ---
 
@@ -22,7 +22,7 @@ Key Platform Deliverables:
 1. **Primary Children's Luxury Experience**: Dedicated `/kids` collection featuring occasion gowns, celebration bandhgalas, junior double-breasted tailoring, and heirloom Banarasi brocades. Every garment includes pure hypoallergenic organic silk linings, tagless interiors, and 2.5-inch hidden growth allowances.
 2. **True Child-Proportioned 3D Mannequin & Garments**: Anatomically engineered child dressform (`KidsMannequin.tsx`, approx. 6–8Y scale) with 3D celebration dresses (`KidsOccasionDress.tsx`) and tailored bandhgalas (`KidsFestiveJacket.tsx`).
 3. **Independent MEN & WOMEN Collections**: Complete, fully developed stores (`/men` and `/women`) with dedicated product dossiers, filtering, and bespoke sizing.
-4. **Signature 6-Phase Reveal Across 3 Collections**: Cinematic scroll reveal supporting **KIDS (Featured)**, **MEN**, and **WOMEN** with instant toggling into interactive 3D WebGL inspection.
+4. **Signature 7-Phase Reveal (Phases A–G) Across 3 Universes**: Cinematic scroll reveal supporting **KIDS (Featured)**, **WOMEN**, and **MEN** with synchronized 1080p video scrub and instant toggling into interactive 3D WebGL inspection.
 5. **3D Bespoke Atelier Workspace**: Digital customizer supporting all three collections with live PBR fabric swatching, colorways, collar/lapel styles, freshwater seed pearl / crest button accents, child monogramming, and made-to-measure growth inputs.
 6. **Parent-Centric Sizing & Shopping Bag**: Sliding persistent drawer (`localStorage`) with quotation checkout and WhatsApp Concierge booking.
 
@@ -45,15 +45,22 @@ Key Platform Deliverables:
 
 ---
 
-## 3. Platform Architecture & Directory Structure
+## 3. Platform Architecture & Documentation Suite
 
 ```
 story-behind-what-we-wear/
-├── docs/                                            # Technical specifications & system guides
+├── docs/                                            # Complete technical & production documentation suite
+│   ├── BRAND_GUIDELINES.md                          # Brand philosophy, positioning, tone of voice & prohibited tropes
+│   ├── DESIGN_SYSTEM.md                             # Color tokens, typography, component specs & WCAG contrast
+│   ├── MATERIAL_LIBRARY.md                          # Three.js PBR textile registry (Organza, Merino, Velvet, Zari)
+│   ├── SCROLL_ANIMATION_SYSTEM.md                   # 7-Phase reveal choreography & dual video/3D sync engine
+│   ├── ATELIER_WORKSPACE.md                         # 3D customizer architecture & pediatric growth controls
+│   ├── ECOMMERCE.md                                 # Product catalog schema, cart service & quotation lifecycle
+│   ├── DEPLOYMENT.md                                # Build commands, CDN strategy & security boundaries
 │   ├── ARCHITECTURE.md                              # Application state, routing & component topology
-│   ├── VIDEO_ASSET_PIPELINE.md                      # 1080p video specifications & scroll scrubbing engine
 │   ├── 3D_GARMENT_PIPELINE.md                       # Procedural geometry, PBR materials & lighting rig
-│   └── ECOMMERCE_WORKFLOW.md                        # Product schema, cart service & quotation workflow
+│   ├── ECOMMERCE_WORKFLOW.md                        # Commercial workflows & quotation lifecycle
+│   └── VIDEO_ASSET_PIPELINE.md                      # 1080p video specifications & scroll scrubbing engine
 ├── public/
 │   ├── assets/
 │   │   ├── videos/                                  # 1080p Master Video Assets
@@ -65,7 +72,7 @@ story-behind-what-we-wear/
 │   ├── components/
 │   │   ├── Header.tsx                               # Luxury navigation featuring prominent KIDS COUTURE
 │   │   ├── HeroSection.tsx                          # 4K hero with rotating Children's Couture Dress
-│   │   ├── ScrollGarmentCinematic.tsx               # 6-phase reveal supporting KIDS, MEN & WOMEN
+│   │   ├── ScrollGarmentCinematic.tsx               # 7-phase reveal (Phases A–G) supporting KIDS, MEN & WOMEN
 │   │   ├── DividedAtelier.tsx                       # Interactive resizable split-screen
 │   │   ├── StoreCollectionPage.tsx                  # Dedicated storefront for Kids, Men & Women
 │   │   ├── ProductDetailPage.tsx                    # Luxury PDP with 3D/Video tabs & Parent Guide
@@ -148,7 +155,7 @@ npm run build
 | **Independent Men & Women** | **Complete** | `/men` and `/women` fully developed with 3D viewports |
 | **Child-Proportioned 3D** | **Complete** | `KidsMannequin.tsx`, `KidsOccasionDress.tsx`, `KidsFestiveJacket.tsx` |
 | **Colour System Overhaul** | **Complete** | Porcelain, Warm Ivory, Soft Sand, Champagne, Dusty Rose, Powder Blue |
-| **Scroll Reveal (All 3)** | **Complete** | `ScrollGarmentCinematic.tsx` with dedicated Kids, Men, Women phases |
+| **Scroll Reveal (All 3)** | **Complete** | `ScrollGarmentCinematic.tsx` with 7-phase reveal (Phases A–G) across Kids, Women, and Men |
 | **3D Atelier Workspace** | **Complete** | `AtelierWorkspace.tsx` supporting child fabrics & growth sizing |
 | **Parent Guide & Safety** | **Complete** | Organic silk linings, growth seam buffers, parent-facing checkout |
 | **TypeScript / Vite Build** | **Passed** | 0 errors across 2,182 compiled modules |

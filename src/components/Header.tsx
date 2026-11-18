@@ -21,7 +21,16 @@ export function Header({
   onOpenCart
 }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [cartCount, setCartCount] = useState<number>(() => cartService.getCount(cartService.getItems()));
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const handleCartUpdate = (e: Event) => {
@@ -42,7 +51,7 @@ export function Header({
 
   return (
     <>
-      <header className="topbar">
+      <header className={`topbar ${isScrolled ? 'topbar-compact' : ''}`}>
         {/* Brand Wordmark Group */}
         <div className="brand-group">
           <button
@@ -53,7 +62,7 @@ export function Header({
           >
             THE THREADOR
           </button>
-          <span className="brand-tagline">MY STORY, THREADED. • INDIA</span>
+          <span className="brand-tagline">Clothing, considered.</span>
         </div>
 
         {/* Central Editorial Navigation (Complete Luxury Storefront) */}

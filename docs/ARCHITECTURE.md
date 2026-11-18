@@ -49,7 +49,7 @@ story-behind-what-we-wear/
 │   ├── components/
 │   │   ├── Header.tsx                               # Luxury navigation featuring prominent KIDS COUTURE
 │   │   ├── HeroSection.tsx                          # 4K hero with rotating Children's Couture Dress
-│   │   ├── ScrollGarmentCinematic.tsx               # 6-phase reveal supporting KIDS, MEN & WOMEN
+│   │   ├── ScrollGarmentCinematic.tsx               # 7-phase reveal (Phases A–G) supporting KIDS, MEN & WOMEN
 │   │   ├── DividedAtelier.tsx                       # Interactive resizable split-screen
 │   │   ├── StoreCollectionPage.tsx                  # Dedicated storefront for Kids, Men & Women
 │   │   ├── ProductDetailPage.tsx                    # Luxury PDP with 3D/Video tabs & Parent Guide
@@ -78,7 +78,17 @@ story-behind-what-we-wear/
 │   │   └── global.css                               # Luxury editorial typography & design system
 │   ├── App.tsx                                      # Root orchestrator & route coordinator
 │   └── main.tsx                                     # Application entrypoint
-├── docs/                                            # Technical & production documentation
+├── docs/                                            # Technical & production documentation suite
+│   ├── BRAND_GUIDELINES.md                          # Brand philosophy, positioning & voice
+│   ├── DESIGN_SYSTEM.md                             # Color tokens, typography, component specs
+│   ├── MATERIAL_LIBRARY.md                          # Three.js PBR textile registry & shaders
+│   ├── SCROLL_ANIMATION_SYSTEM.md                   # 7-Phase reveal choreography & sync engine
+│   ├── ATELIER_WORKSPACE.md                         # 3D customizer architecture & growth controls
+│   ├── ECOMMERCE.md                                 # Product catalog, cart service & quotation
+│   ├── DEPLOYMENT.md                                # Build commands, CDN strategy & security
+│   ├── 3D_GARMENT_PIPELINE.md                       # Blender to Three.js asset pipeline
+│   ├── ECOMMERCE_WORKFLOW.md                        # Commercial workflows & quotation lifecycle
+│   └── VIDEO_ASSET_PIPELINE.md                      # 1080p video compression & frame extraction
 └── README.md                                        # Master production documentation
 ```
 
