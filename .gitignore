@@ -68,3 +68,7 @@ tmp/
 temp/
 scratch/
 
+# Local raw unorganized video files in root (production copies are in public/assets/videos/)
+/*_1080p.mp4
+
+

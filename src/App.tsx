@@ -5,6 +5,7 @@ import Lenis from 'lenis';
 
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
+import { ScrollGarmentCinematic } from './components/ScrollGarmentCinematic';
 import { DividedAtelier } from './components/DividedAtelier';
 import { GarmentXRaySection } from './components/GarmentXRaySection';
 import { EducationSection } from './components/EducationSection';
@@ -13,6 +14,10 @@ import { AboutUsSection } from './components/AboutUsSection';
 import { GalleryPage } from './components/GalleryPage';
 import { ContactSection } from './components/ContactSection';
 import { CollectionSection } from './components/CollectionSection';
+import { StoreCollectionPage } from './components/StoreCollectionPage';
+import { ProductDetailPage } from './components/ProductDetailPage';
+import { AtelierWorkspace } from './components/AtelierWorkspace';
+import { ShoppingBagDrawer } from './components/ShoppingBagDrawer';
 import { Footer } from './components/Footer';
 import { AssetStatusModal } from './components/AssetStatusModal';
 import { PaymentModal } from './components/PaymentModal';
@@ -28,6 +33,7 @@ export default function App() {
 
   // Active page routing state
   const [activePage, setActivePage] = useState<PageId>('home');
+  const [selectedProductId, setSelectedProductId] = useState<string>('THREADOR-W-001');
 
   // Scroll and stage state for Home
   const [scrollProgress, setScrollProgress] = useState<number>(0);
@@ -36,9 +42,10 @@ export default function App() {
   // Collection filter selection
   const [selectedAtelierFilter, setSelectedAtelierFilter] = useState<AtelierGender | 'all'>('all');
 
-  // Modals state
+  // Modals & Drawers state
   const [isAssetModalOpen, setIsAssetModalOpen] = useState<boolean>(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState<boolean>(false);
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
   const [assetInfo, setAssetInfo] = useState<ModelAssetInfo>({
     isExternalGlb: false,
@@ -70,12 +77,16 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  const handleOpenProductDetail = useCallback((productId: string) => {
+    setSelectedProductId(productId);
+    setActivePage('product-detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const handleSelectCollection = useCallback((atelier: AtelierGender) => {
     setSelectedAtelierFilter(atelier);
-    const collectionElem = document.getElementById('collection');
-    if (collectionElem) {
-      collectionElem.scrollIntoView({ behavior: 'smooth' });
-    }
+    setActivePage(atelier === 'men' ? 'men' : 'women');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   const handleJumpToXRay = useCallback(() => {
@@ -157,7 +168,7 @@ export default function App() {
 
   return (
     <div ref={rootRef} className={`site-shell ${reducedMotion ? 'reduced-motion' : ''}`}>
-      {/* 1. TOPBAR & EDITORIAL NAVIGATION */}
+      {/* 1. TOPBAR & LUXURY NAVIGATION */}
       <Header
         activePage={activePage}
         onNavigatePage={handleNavigatePage}
@@ -165,6 +176,7 @@ export default function App() {
         onOpenAssetModal={() => setIsAssetModalOpen(true)}
         reducedMotion={reducedMotion}
         onToggleReducedMotion={() => setReducedMotion((prev) => !prev)}
+        onOpenCart={() => setIsCartOpen(true)}
       />
 
       <main>
@@ -173,7 +185,7 @@ export default function App() {
         ========================================================= */}
         {activePage === 'home' && (
           <>
-            {/* SECTION 01: OPENING 3D CINEMATIC HERO (5-SCENE CHOREOGRAPHY) */}
+            {/* SECTION 01: OPENING 3D CINEMATIC HERO (4K MINIMALIST) */}
             <div ref={heroTrackRef} className="hero-scroll-track">
               <HeroSection
                 scrollProgress={scrollProgress}
@@ -186,22 +198,29 @@ export default function App() {
               />
             </div>
 
-            {/* PART III: MEN × WOMEN RESIZABLE SPLIT-SCREEN */}
+            {/* SECTION 02: SIGNATURE SCROLL-DRIVEN 1080P GARMENT REVEAL */}
+            <ScrollGarmentCinematic
+              initialGender="women"
+              onNavigatePage={handleNavigatePage}
+              onOpenProductDetail={handleOpenProductDetail}
+            />
+
+            {/* SECTION 03: MEN × WOMEN RESIZABLE SPLIT-SCREEN (100VH) */}
             <DividedAtelier
               onNavigatePage={handleNavigatePage}
               onSelectCollection={handleSelectCollection}
             />
 
-            {/* PART IV: THE GARMENT X-RAY (FINISHED -> BONING -> MACRO WEAVE) */}
+            {/* SECTION 04: THE GARMENT X-RAY (FINISHED -> BONING -> MACRO WEAVE) */}
             <GarmentXRaySection />
 
-            {/* PART V: THE EDUCATIONAL EXPERIENCE (5 FOUNDATIONS & CURRICULUM) */}
+            {/* SECTION 05: THE EDUCATIONAL EXPERIENCE (5 FOUNDATIONS & CURRICULUM) */}
             <EducationSection isFullPage={false} />
 
-            {/* PART VI: COSTUME ATELIER & ANNUAL DAY EXPERIENCES */}
+            {/* SECTION 06: COSTUME ATELIER & ANNUAL DAY EXPERIENCES */}
             <AnnualDaySection isFullPage={false} />
 
-            {/* PART VII: THE LIVING COLLECTION ARCHIVE */}
+            {/* SECTION 07: THE LIVING COLLECTION ARCHIVE */}
             <CollectionSection
               selectedAtelierFilter={selectedAtelierFilter}
               onFilterChange={setSelectedAtelierFilter}
@@ -210,30 +229,95 @@ export default function App() {
         )}
 
         {/* =========================================================
-            PAGE 02: ABOUT US (INSTITUTIONAL PROVENANCE & VISION)
+            PAGE 02: MEN'S DEDICATED STORE COLLECTION
         ========================================================= */}
-        {activePage === 'about' && <AboutUsSection />}
+        {activePage === 'men' && (
+          <StoreCollectionPage
+            gender="men"
+            onSelectProduct={handleOpenProductDetail}
+            onNavigatePage={handleNavigatePage}
+            onOpenCart={() => setIsCartOpen(true)}
+          />
+        )}
 
         {/* =========================================================
-            PAGE 03: ANNUAL DAY COSTUMES (FULL PRODUCTION ATELIER)
+            PAGE 03: WOMEN'S DEDICATED STORE COLLECTION
+        ========================================================= */}
+        {activePage === 'women' && (
+          <StoreCollectionPage
+            gender="women"
+            onSelectProduct={handleOpenProductDetail}
+            onNavigatePage={handleNavigatePage}
+            onOpenCart={() => setIsCartOpen(true)}
+          />
+        )}
+
+        {/* =========================================================
+            PAGE 04: ALL COLLECTIONS ARCHIVE
+        ========================================================= */}
+        {activePage === 'collections' && (
+          <CollectionSection
+            selectedAtelierFilter="all"
+            onFilterChange={setSelectedAtelierFilter}
+          />
+        )}
+
+        {/* =========================================================
+            PAGE 05: PRODUCT DETAIL VIEW
+        ========================================================= */}
+        {activePage === 'product-detail' && (
+          <ProductDetailPage
+            productId={selectedProductId}
+            onNavigatePage={handleNavigatePage}
+            onOpenCart={() => setIsCartOpen(true)}
+            onBackToCollection={() => setActivePage(selectedProductId.includes('-M-') ? 'men' : 'women')}
+          />
+        )}
+
+        {/* =========================================================
+            PAGE 06: 3D BESPOKE ATELIER WORKSPACE
+        ========================================================= */}
+        {activePage === 'atelier' && (
+          <AtelierWorkspace
+            onNavigatePage={handleNavigatePage}
+            onOpenCart={() => setIsCartOpen(true)}
+            onOpenProductDetail={handleOpenProductDetail}
+          />
+        )}
+
+        {/* =========================================================
+            PAGE 07: ANNUAL DAY COSTUMES (FULL PRODUCTION ATELIER)
         ========================================================= */}
         {activePage === 'annual-day' && <AnnualDaySection isFullPage={true} />}
 
         {/* =========================================================
-            PAGE 04: CERTIFICATION COURSE (EDUCATION CURRICULUM)
+            PAGE 08: CERTIFICATION COURSE (EDUCATION CURRICULUM)
         ========================================================= */}
         {activePage === 'course' && <EducationSection isFullPage={true} />}
 
         {/* =========================================================
-            PAGE 05: GALLERY (STAGE, STUDENT & TEXTILE PORTFOLIO)
+            PAGE 09: GALLERY (STAGE, STUDENT & TEXTILE PORTFOLIO)
         ========================================================= */}
         {activePage === 'gallery' && <GalleryPage />}
 
         {/* =========================================================
-            PAGE 06: CONTACT & CONVERSION
+            PAGE 10: ABOUT US (INSTITUTIONAL PROVENANCE & VISION)
+        ========================================================= */}
+        {activePage === 'about' && <AboutUsSection />}
+
+        {/* =========================================================
+            PAGE 11: CONTACT & CONCIERGE
         ========================================================= */}
         {activePage === 'contact' && <ContactSection onNavigatePage={handleNavigatePage} />}
       </main>
+
+      {/* PERSISTENT LUXURY SHOPPING BAG DRAWER */}
+      <ShoppingBagDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        onNavigatePage={handleNavigatePage}
+        onOpenProductDetail={handleOpenProductDetail}
+      />
 
       {/* 3D ASSET INSPECTOR MODAL */}
       <AssetStatusModal

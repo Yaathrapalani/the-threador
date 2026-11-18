@@ -4,7 +4,18 @@ export type XRayStage = 'finished' | 'construction' | 'textile';
 
 export type GarmentCameraView = 'front' | 'threeQuarter' | 'side' | 'back' | 'macro' | 'stitching';
 
-export type PageId = 'home' | 'about' | 'annual-day' | 'course' | 'gallery' | 'contact';
+export type PageId =
+  | 'home'
+  | 'men'
+  | 'women'
+  | 'collections'
+  | 'product-detail'
+  | 'atelier'
+  | 'annual-day'
+  | 'course'
+  | 'gallery'
+  | 'about'
+  | 'contact';
 
 export interface GarmentStory {
   id: string;
@@ -38,6 +49,72 @@ export interface ModelAssetInfo {
   triangles: number;
   shaderTechnique: string;
   status: 'procedural-couture-active' | 'external-glb-loaded' | 'fallback-active';
+}
+
+export interface ProductRecord {
+  id: string;
+  name: string;
+  subtitle: string;
+  gender: AtelierGender;
+  category: string;
+  price: number;
+  currency: string;
+  leadTimeWeeks: number;
+  craftsmanshipHours: number;
+  stitchCount: string;
+  silhouette: string;
+  primaryFabric: string;
+  lining: string;
+  details: string[];
+  materials: {
+    composition: string;
+    weight: string;
+    provenance: string;
+    weave: string;
+  };
+  sizes: string[];
+  colors: {
+    name: string;
+    hex: string;
+  }[];
+  featuredMedia: {
+    heroImage: string;
+    thumbnail: string;
+    videoUrl?: string;
+    videoFramePreview?: string;
+    additionalImages: string[];
+  };
+  modelPath?: string;
+  isCustomizable: boolean;
+  availability: 'Made to Order' | 'Atelier Exclusive' | 'Bespoke Only';
+  description: string;
+}
+
+export interface CartItem {
+  id: string; // unique cart item id (e.g. productId-size-color-timestamp)
+  product: ProductRecord;
+  selectedSize: string;
+  selectedColor: string;
+  selectedFabric?: string;
+  customNotes?: string;
+  quantity: number;
+  addedAt: number;
+}
+
+export interface AtelierCustomizationConfig {
+  garmentId: string;
+  gender: AtelierGender;
+  fabricId: string;
+  fabricName: string;
+  colorName: string;
+  colorHex: string;
+  lapelStyle: string;
+  buttonStyle: string;
+  liningStyle: string;
+  monogramText: string;
+  measurementsType: 'standard' | 'made-to-measure';
+  size: string;
+  clientNotes: string;
 }
 
 export interface AnnualDayLead {

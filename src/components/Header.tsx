@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Menu, X, Cpu, Eye, BookOpen, Drama } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Menu, X, ShoppingBag, Sparkles, Scissors, Drama, BookOpen } from 'lucide-react';
+import { cartService } from '../services/cartService';
 import type { ModelAssetInfo, PageId } from '../types';
 
 interface HeaderProps {
@@ -9,6 +10,7 @@ interface HeaderProps {
   onOpenAssetModal: () => void;
   reducedMotion: boolean;
   onToggleReducedMotion: () => void;
+  onOpenCart: () => void;
 }
 
 export function Header({
@@ -16,10 +18,21 @@ export function Header({
   onNavigatePage,
   assetInfo,
   onOpenAssetModal,
-  reducedMotion,
-  onToggleReducedMotion
+  onOpenCart
 }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [cartCount, setCartCount] = useState<number>(() => cartService.getCount(cartService.getItems()));
+
+  useEffect(() => {
+    const handleCartUpdate = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const items = customEvent.detail || cartService.getItems();
+      setCartCount(cartService.getCount(items));
+    };
+
+    window.addEventListener('the-threador-cart-update', handleCartUpdate);
+    return () => window.removeEventListener('the-threador-cart-update', handleCartUpdate);
+  }, []);
 
   const handleNav = (page: PageId) => {
     onNavigatePage(page);
@@ -30,7 +43,7 @@ export function Header({
   return (
     <>
       <header className="topbar">
-        {/* Brand Group */}
+        {/* Brand Wordmark Group */}
         <div className="brand-group">
           <button
             type="button"
@@ -43,7 +56,7 @@ export function Header({
           <span className="brand-tagline">MY STORY, THREADED. • INDIA</span>
         </div>
 
-        {/* Central Editorial Navigation (All 6 Pages) */}
+        {/* Central Editorial Navigation (Complete Luxury Storefront) */}
         <nav className="topbar-nav" aria-label="Main Navigation">
           <button
             type="button"
@@ -52,34 +65,55 @@ export function Header({
           >
             HOME
           </button>
+
           <button
             type="button"
-            className={`nav-link-btn ${activePage === 'about' ? 'active' : ''}`}
-            onClick={() => handleNav('about')}
+            className={`nav-link-btn ${activePage === 'men' ? 'active' : ''}`}
+            onClick={() => handleNav('men')}
           >
-            ABOUT US
+            <Scissors size={11} className="inline-nav-icon" /> MEN
           </button>
+
+          <button
+            type="button"
+            className={`nav-link-btn ${activePage === 'women' ? 'active' : ''}`}
+            onClick={() => handleNav('women')}
+          >
+            <Sparkles size={11} className="inline-nav-icon" /> WOMEN
+          </button>
+
+          <button
+            type="button"
+            className={`nav-link-btn ${activePage === 'atelier' ? 'active' : ''}`}
+            onClick={() => handleNav('atelier')}
+          >
+            3D ATELIER
+          </button>
+
           <button
             type="button"
             className={`nav-link-btn ${activePage === 'annual-day' ? 'active' : ''}`}
             onClick={() => handleNav('annual-day')}
           >
-            <Drama size={12} className="inline-nav-icon" /> ANNUAL DAY
+            <Drama size={11} className="inline-nav-icon" /> ANNUAL DAY
           </button>
+
           <button
             type="button"
             className={`nav-link-btn ${activePage === 'course' ? 'active' : ''}`}
             onClick={() => handleNav('course')}
           >
-            <BookOpen size={12} className="inline-nav-icon" /> CERTIFICATION
+            <BookOpen size={11} className="inline-nav-icon" /> CERTIFICATION
           </button>
+
           <button
             type="button"
-            className={`nav-link-btn ${activePage === 'gallery' ? 'active' : ''}`}
-            onClick={() => handleNav('gallery')}
+            className={`nav-link-btn ${activePage === 'about' ? 'active' : ''}`}
+            onClick={() => handleNav('about')}
           >
-            GALLERY
+            STORY
           </button>
+
           <button
             type="button"
             className={`nav-link-btn ${activePage === 'contact' ? 'active' : ''}`}
@@ -89,139 +123,132 @@ export function Header({
           </button>
         </nav>
 
-        {/* Right Side Actions */}
+        {/* Right Side Actions: Shopping Bag + 3D Telemetry */}
         <div className="topbar-actions">
-          {/* 3D Asset Inspector Badge */}
+          {/* Shopping Bag Trigger */}
+          <button
+            type="button"
+            className="topbar-bag-btn"
+            onClick={onOpenCart}
+            aria-label={`Open Shopping Bag, ${cartCount} items`}
+          >
+            <ShoppingBag size={14} />
+            <span className="bag-label">BAG</span>
+            <span className={`bag-count-badge ${cartCount > 0 ? 'has-items' : ''}`}>
+              {cartCount}
+            </span>
+          </button>
+
+          {/* 3D Asset Telemetry */}
           <button
             type="button"
             className="asset-pipeline-badge"
             onClick={onOpenAssetModal}
-            title="Inspect 3D Scene Asset Pipeline & GLB Slot"
-            aria-label="3D Asset Pipeline Inspector"
+            title="Inspect 3D Scene Pipeline & Asset Slots"
           >
-            <Cpu size={12} className="pulse-icon" />
-            <span className="badge-text">
-              {assetInfo.isExternalGlb ? 'PROD GLB LOADED' : 'COUTURE 3D RIG'}
-            </span>
-            <span className="badge-pill">INFO</span>
+            <span className="badge-dot" />
+            <span>{assetInfo.status === 'external-glb-loaded' ? '4K PROD GLB' : 'ATELIER RIG'}</span>
           </button>
 
-          {/* Reduced Motion Toggle */}
-          <button
-            type="button"
-            className={`action-btn ${reducedMotion ? 'active' : ''}`}
-            onClick={onToggleReducedMotion}
-            title={reducedMotion ? 'Enable Camera Motion' : 'Reduce Camera Motion'}
-            aria-label="Toggle camera motion"
-          >
-            <Eye size={13} />
-            <span className="btn-label">{reducedMotion ? 'MOTION OFF' : '60 FPS'}</span>
-          </button>
-
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Toggle Button */}
           <button
             type="button"
             className="menu-button"
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => setMenuOpen((prev) => !prev)}
             aria-expanded={menuOpen}
-            aria-label="Toggle Navigation Menu"
+            aria-label="Toggle navigation drawer"
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </header>
 
-      {/* Mobile & Tablet Editorial Drawer */}
+      {/* Mobile Drawer Menu */}
       {menuOpen && (
-        <div className="menu-overlay" onClick={() => setMenuOpen(false)}>
-          <div className="menu-drawer" onClick={(e) => e.stopPropagation()}>
-            <div className="menu-header">
-              <span className="eyebrow">THE THREADOR DIRECTORY</span>
-              <button
-                type="button"
-                className="close-drawer-btn"
-                onClick={() => setMenuOpen(false)}
-                aria-label="Close Menu"
-              >
-                <X size={18} />
-              </button>
-            </div>
+        <div className="mobile-menu-drawer" role="dialog" aria-label="Mobile Navigation">
+          <div className="drawer-header">
+            <span className="drawer-title">THE THREADOR • DIRECTORY</span>
+            <button
+              type="button"
+              className="drawer-close"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Close menu"
+            >
+              <X size={18} />
+            </button>
+          </div>
 
-            <nav className="menu-nav">
-              <button
-                type="button"
-                className="drawer-nav-item"
-                onClick={() => handleNav('home')}
-              >
-                <span className="nav-num">PAGE 01</span>
-                <span className="nav-title">Home & 3D Exhibition</span>
-                <span className="nav-desc">Opening Mannequin, Men × Women Split, Garment X-Ray</span>
-              </button>
+          <div className="drawer-links-stack">
+            <button
+              type="button"
+              className={`drawer-link ${activePage === 'home' ? 'active' : ''}`}
+              onClick={() => handleNav('home')}
+            >
+              HOME
+            </button>
+            <button
+              type="button"
+              className={`drawer-link ${activePage === 'men' ? 'active' : ''}`}
+              onClick={() => handleNav('men')}
+            >
+              MEN’S TAILORED ARCHITECTURE
+            </button>
+            <button
+              type="button"
+              className={`drawer-link ${activePage === 'women' ? 'active' : ''}`}
+              onClick={() => handleNav('women')}
+            >
+              WOMEN’S HAUTE COUTURE
+            </button>
+            <button
+              type="button"
+              className={`drawer-link ${activePage === 'atelier' ? 'active' : ''}`}
+              onClick={() => handleNav('atelier')}
+            >
+              3D BESPOKE ATELIER WORKSPACE
+            </button>
+            <button
+              type="button"
+              className={`drawer-link ${activePage === 'annual-day' ? 'active' : ''}`}
+              onClick={() => handleNav('annual-day')}
+            >
+              ANNUAL DAY COSTUME ATELIER
+            </button>
+            <button
+              type="button"
+              className={`drawer-link ${activePage === 'course' ? 'active' : ''}`}
+              onClick={() => handleNav('course')}
+            >
+              PARENT CERTIFICATION PROGRAMMES
+            </button>
+            <button
+              type="button"
+              className={`drawer-link ${activePage === 'about' ? 'active' : ''}`}
+              onClick={() => handleNav('about')}
+            >
+              ABOUT & TEXTILE HERITAGE
+            </button>
+            <button
+              type="button"
+              className={`drawer-link ${activePage === 'contact' ? 'active' : ''}`}
+              onClick={() => handleNav('contact')}
+            >
+              CONTACT & CONCIERGE
+            </button>
+          </div>
 
-              <button
-                type="button"
-                className="drawer-nav-item"
-                onClick={() => handleNav('about')}
-              >
-                <span className="nav-num">PAGE 02</span>
-                <span className="nav-title">About The Threador</span>
-                <span className="nav-desc">Brand philosophy, five foundations, and vision</span>
-              </button>
-
-              <button
-                type="button"
-                className="drawer-nav-item"
-                onClick={() => handleNav('annual-day')}
-              >
-                <span className="nav-num">PAGE 03</span>
-                <span className="nav-title">Annual Day Costumes</span>
-                <span className="nav-desc">One stage. One million dreams. Costume atelier</span>
-              </button>
-
-              <button
-                type="button"
-                className="drawer-nav-item"
-                onClick={() => handleNav('course')}
-              >
-                <span className="nav-num">PAGE 04</span>
-                <span className="nav-title">Certification Course</span>
-                <span className="nav-desc">Fashion education for Grades 1–3, 4–6, 7–8</span>
-              </button>
-
-              <button
-                type="button"
-                className="drawer-nav-item"
-                onClick={() => handleNav('gallery')}
-              >
-                <span className="nav-num">PAGE 05</span>
-                <span className="nav-title">Stage & Student Gallery</span>
-                <span className="nav-desc">Theatrical costumes and student craft portfolio</span>
-              </button>
-
-              <button
-                type="button"
-                className="drawer-nav-item"
-                onClick={() => handleNav('contact')}
-              >
-                <span className="nav-num">PAGE 06</span>
-                <span className="nav-title">Connect With The Atelier</span>
-                <span className="nav-desc">School consultations, parent admissions, and WhatsApp</span>
-              </button>
-            </nav>
-
-            <div className="menu-footer">
-              <span>THE THREADOR • MY STORY, THREADED.</span>
-              <button
-                type="button"
-                className="inspect-model-link"
-                onClick={() => {
-                  setMenuOpen(false);
-                  onOpenAssetModal();
-                }}
-              >
-                Inspect 3D Scene Pipeline →
-              </button>
-            </div>
+          <div className="drawer-bag-bar">
+            <button
+              type="button"
+              className="drawer-open-bag-btn"
+              onClick={() => {
+                setMenuOpen(false);
+                onOpenCart();
+              }}
+            >
+              <ShoppingBag size={14} />
+              <span>OPEN ATELIER BAG ({cartCount})</span>
+            </button>
           </div>
         </div>
       )}
