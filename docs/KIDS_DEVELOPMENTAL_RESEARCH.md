@@ -80,3 +80,4 @@ This document outlines the pediatric dermatological, biomechanical, and psychoso
 | **Hem Allowance** | 1.0 inch standard | 2.5 inch dual-fold growth hem buffer |
 | **Zippers** | Exposed metal teeth | Concealed nylon coil with protective silk backing guard |
 | **Labels** | Woven polyester neck label | Tagless laser-print on lower hem |
+

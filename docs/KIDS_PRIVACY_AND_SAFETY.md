@@ -53,3 +53,4 @@ Our digital platform complies with:
 - **No Retargeting of Minors:** We do not participate in cross-site retargeting networks (Meta Pixel, Google Remarketing) for children's category pages.
 - **No Gamified Dark Patterns:** The interface contains no loot boxes, countdown panic timers, artificial scarcity popups ("Only 1 left!"), or manipulative microtransactions.
 - **Friendly Parental Handoff:** The "Share with Mum & Dad" feature generates a standard `wa.me` text link using native OS URI schemes without collecting parent or child phone numbers on our web platform.
+

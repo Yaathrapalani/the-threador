@@ -61,3 +61,4 @@ All dyes, mordants, finishes, and metallic threads are screened by independent t
 - Children's ceremonial robes and multi-layered gowns are evaluated under **16 CFR Part 1610 (Standard for the Flammability of Clothing Textiles)**.
 - **Natural Flame Retardancy:** 100% pure Mulberry silk and organic English wool possess natural self-extinguishing characteristics with high Limiting Oxygen Index (LOI ~23–25%) and high ignition temperatures (>400°C), vastly superior to synthetic polyesters and acetates that melt into liquid droplets.
 - All fabrics achieve **Class 1 (Normal Flammability - Flame spread time > 7.0 seconds)** without the use of toxic halogenated chemical flame retardants.
+

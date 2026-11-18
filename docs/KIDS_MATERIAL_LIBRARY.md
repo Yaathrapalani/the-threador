@@ -69,3 +69,4 @@ Every textile utilized in The Threador Kids collection must satisfy two non-nego
 | **Varanasi Kadhwa Zari** | Katan Silk + Zari | 145 gsm | Class II (Child) | Negligible (Lined) | 4–14Y |
 | **Bengal Matka Silk** | Handspun Silk | 95 gsm | Class I (Infant) | Zero | 2–14Y |
 | *Synthetic Polyester Tulle* *(Rejected)* | Petroleum Polymer | 35 gsm | None | High (Prickle/Rash) | Prohibited |
+

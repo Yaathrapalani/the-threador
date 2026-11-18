@@ -92,3 +92,4 @@ const zariBrocadeMaterial = new THREE.MeshStandardMaterial({
 - **Draw Calls:** Capped at 22 draw calls per frame by sharing material buffers and combining geometry meshes.
 - **Texture Compression:** KTX2 / Basis Universal textures with 1024x1024 resolution for desktop and 512x512 for mobile WebGL contexts.
 - **Shadow Cascades:** Single directional key light casting 1024x1024 soft PCF (Percentage-Closer Filtering) shadow; fill and rim lights are purely non-shadow-casting ambient and point sources.
+

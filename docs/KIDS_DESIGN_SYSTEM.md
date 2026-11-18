@@ -95,3 +95,4 @@ Technical Pills:  JetBrains Mono (Semi-bold / 600 / 8–10px / 0.12–0.18em tra
 - **Desktop (>= 1200px):** 3-column product grid, 5-column occasion strip, 2-column institutional split.
 - **Tablet (768px – 1199px):** 2-column product grid, auto-wrap occasion cards, stacked fabric observatory.
 - **Mobile (< 768px):** 1-column product cards, scrollable horizontal occasion strip, full-width modal dialogues.
+

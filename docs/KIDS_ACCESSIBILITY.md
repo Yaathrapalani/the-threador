@@ -61,3 +61,4 @@ For children or parents prone to vestibular disorders, motion sickness, or senso
 ```
 - In the 3D Atelier, turntable auto-rotation is disabled by default when `prefers-reduced-motion` is detected in the browser media query.
 - Flash or strobe effects are strictly absent across all lighting modes.
+

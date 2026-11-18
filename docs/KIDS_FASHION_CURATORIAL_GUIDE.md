@@ -64,3 +64,4 @@ Festive occasions (Diwali, Eid, Christmas, Navratri, Pongal) connect children to
 
 ### 3.4 School Annual Day Productions ("The Little Theatre")
 The Threador Costume Atelier partners with premier educational institutions to produce bespoke theatrical costumes for drama productions (Shakespeare, Kalidasa, mythology, and modern epics).
+

@@ -67,3 +67,4 @@ For each garment, the customer is shown the direct artisan investment:
 
 ### 3.3 Institutional Batch Ordering (School Annual Day)
 - Specialized portal providing volume pricing tiers, batch delivery schedules, and school invoicing with GST input tax credit documentation.
+

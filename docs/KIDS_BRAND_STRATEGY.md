@@ -83,3 +83,4 @@ The Threador Kids is structured into four permanent heirloom collections and one
 | Baby Dior | Heritage Haute Couture | Silk/Wool blends | Fixed sizing | High quality, conventional seams |
 | Bonpoint | Parisian Elegance | Cotton/Cashmere | Fixed sizing | Gentle, standard finishing |
 | Gucci Kids | High Fashion Miniature | Synthetic/Cotton blends | Non-adjustable | Conventional fashion labels |
+

@@ -79,3 +79,4 @@ The primary innovation of The Threador Kids is the **Adaptable French Seam Syste
 - **Colorfastness to Perspiration:** Grade 4.5 minimum (AATCC Test Method 15).
 - **Dimensional Stability:** Maximum 1.5% shrinkage after 5 gentle dry-clean cycles or cold silk-handwash cycles.
 - **Pilling Resistance:** Grade 4 minimum on Martindale Abrasion Test after 10,000 rubs.
+
